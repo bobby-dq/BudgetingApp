@@ -29,15 +29,11 @@ namespace BudgetingApp.Models.BudgetingModels
         public DateTime EndDate {get;set;}
 
 
-        
-        public DateTime DateCreated {get; set;}
 
+        public readonly DateTime DateCreated = DateTime.Now;
 
         // Foreign relationships
         public IEnumerable<ExpenseCategory> ExpenseCategories {get; set;}
-        public IEnumerable<ExpenseItem> ExpenseItems {get; set;}
         public IEnumerable<IncomeCategory> IncomeCategories {get; set;}
-        public IEnumerable<IncomeItem> IncomeItems {get;set;}
-
     }
 }
