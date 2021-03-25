@@ -20,6 +20,7 @@ namespace BudgetingApp.Models.BudgetingModels
         
         [Column(TypeName="decimal(12,2)")]
         [Display(Name="Budgeted Amount", Prompt="Enter 0 if not known.")]
+        [Required(ErrorMessage="Please enter a budgeted amount. Enter 0 if not known.")]
         public decimal BudgetedAmount {get; set;}
 
 
@@ -28,6 +29,7 @@ namespace BudgetingApp.Models.BudgetingModels
 
 
         public readonly DateTime DateCreated = DateTime.Now;
+
 
         // Foreign Relationships
         public long BudgetId {get; set;}

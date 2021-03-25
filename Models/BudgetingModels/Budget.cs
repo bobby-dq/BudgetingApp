@@ -32,6 +32,7 @@ namespace BudgetingApp.Models.BudgetingModels
 
         public readonly DateTime DateCreated = DateTime.Now;
 
+
         // Foreign relationships
         public IEnumerable<ExpenseCategory> ExpenseCategories {get; set;}
         public IEnumerable<IncomeCategory> IncomeCategories {get; set;}
