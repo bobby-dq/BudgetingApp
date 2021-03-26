@@ -39,7 +39,7 @@ namespace BudgetingApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BudgetingContext context)
         {
             if (env.IsDevelopment())
             {
@@ -48,8 +48,8 @@ namespace BudgetingApp
             app.UseStatusCodePages();
             app.UseStaticFiles();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>
@@ -57,6 +57,8 @@ namespace BudgetingApp
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+
+            BudgetingSeedData.SeedBudgetingDatabase(context);
         }
     }
 }
