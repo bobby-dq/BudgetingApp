@@ -27,16 +27,22 @@ namespace BudgetingApp
         {
             services.AddControllersWithViews();
 
-
-            // this section is dedicated to setting up the identity
-            services.AddDbContext<IdentityContext>(opts =>
+            // budgeting app DbContext
+            services.AddDbContext<BudgetingContext>(opts =>
             {
                 opts.UseSqlServer(Configuration["ConnectionStrings:BudgetingAppConnection"]);
             });
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
-            services.Configure<IdentityOptions>(opts => {
-                opts.User.RequireUniqueEmail = true;
-            });
+        
+
+            // this section is dedicated to setting up the identity
+            //services.AddDbContext<IdentityContext>(opts =>
+            //{
+            //    opts.UseSqlServer(Configuration["ConnectionStrings:BudgetingAppConnection"]);
+            //});
+            //services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
+            //services.Configure<IdentityOptions>(opts => {
+            //    opts.User.RequireUniqueEmail = true;
+            //});
 
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
