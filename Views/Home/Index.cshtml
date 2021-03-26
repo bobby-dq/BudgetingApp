@@ -1,1 +1,13 @@
-Hello world
+@model IEnumerable<Budget>
+
+<p>Budget List</p>
+<li>
+    @foreach (Budget b in Model)
+    {
+        <ul>
+            <li>
+                @b.Description ||| @b.StartDate.ToString("MMM dd yyyy") ||| @b.EndDate.ToString("MMM dd yyyy")
+            </li>
+        </ul>
+    }
+</li>

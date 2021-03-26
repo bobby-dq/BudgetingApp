@@ -32,22 +32,10 @@ namespace BudgetingApp
             {
                 opts.UseSqlServer(Configuration["ConnectionStrings:BudgetingAppConnection"]);
             });
-        
 
-            // this section is dedicated to setting up the identity
-            //services.AddDbContext<IdentityContext>(opts =>
-            //{
-            //    opts.UseSqlServer(Configuration["ConnectionStrings:BudgetingAppConnection"]);
-            //});
-            //services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
-            //services.Configure<IdentityOptions>(opts => {
-            //    opts.User.RequireUniqueEmail = true;
-            //});
-
-
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddRazorPages().AddRazorRuntimeCompilation();
-            services.AddMvc().AddRazorRuntimeCompilation();
+            //services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            //services.AddRazorPages().AddRazorRuntimeCompilation();
+            //services.AddMvc().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +56,6 @@ namespace BudgetingApp
             {
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }
