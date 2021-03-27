@@ -9,7 +9,22 @@
         <link rel="stylesheet" href="/css/output.css">
         <title>Personal Budgeting App | @ViewData["PageName"]</title>
     </head>
-    <body>
+    <body class="bg-gray-700">
+        <header class="w-full bg-gray-50">
+            <nav class="flex-row flex-wrap">
+                <div class="flex-1">
+                    <a><img src="/icons/iconmonstr-coin-10-240.png"></a>
+                </div>
+                <div class="flex-row flex-1">
+                    <a><div>Budgets</div></a>
+                    <a><div>Add Budget</div></a>
+                </div>
+                <div class="flex-row flex-1">
+                    <a><div>Login / Logout</div></a>
+                    <a><div>Account Settings / Register</div></a>
+                </div>
+            </nav>
+        </header>
         <section class="m-2 p-2">
             @RenderBody()
         </section>

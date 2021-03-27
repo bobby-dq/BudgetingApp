@@ -4,12 +4,12 @@
     <h1>Budget List</h1>
 </div>
 
-<li>
+<ul>
     @foreach (Budget b in Model)
     {
-        <ul>
+        <li>
             @b.Description ||| @b.StartDate.ToString("MMM dd yyyy") ||| @b.EndDate.ToString("MMM dd yyyy")
-        </ul>
+        </li>
     }
-</li>
+</ul>
 
