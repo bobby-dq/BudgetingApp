@@ -70,6 +70,7 @@ namespace BudgetingApp.Models.ViewModelFactories
                 Budget = budget,
                 ExpenseItems = expenseItems,
                 IncomeItems = incomeItems
+                
             };
         }
     }

@@ -1,0 +1,15 @@
+@model IQueryable<Budget>
+
+<div>
+    <h1>Budget List</h1>
+</div>
+
+<li>
+    @foreach (Budget b in Model)
+    {
+        <ul>
+            @b.Description ||| @b.StartDate.ToString("MMM dd yyyy") ||| @b.EndDate.ToString("MMM dd yyyy")
+        </ul>
+    }
+</li>
+
