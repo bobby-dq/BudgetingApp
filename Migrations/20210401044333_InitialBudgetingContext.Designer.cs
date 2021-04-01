@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetingApp.Migrations
 {
     [DbContext(typeof(BudgetingContext))]
-    [Migration("20210326013302_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210401044333_InitialBudgetingContext")]
+    partial class InitialBudgetingContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,9 @@ namespace BudgetingApp.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(12,2)");
 
+                    b.Property<long?>("BudgetId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -103,6 +106,8 @@ namespace BudgetingApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ExpenseItemId");
+
+                    b.HasIndex("BudgetId");
 
                     b.HasIndex("ExpenseCategoryId");
 
@@ -150,6 +155,9 @@ namespace BudgetingApp.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(12,2)");
 
+                    b.Property<long?>("BudgetId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -165,6 +173,8 @@ namespace BudgetingApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IncomeItemId");
+
+                    b.HasIndex("BudgetId");
 
                     b.HasIndex("IncomeCategoryId");
 
@@ -184,11 +194,17 @@ namespace BudgetingApp.Migrations
 
             modelBuilder.Entity("BudgetingApp.Models.BudgetingModels.ExpenseItem", b =>
                 {
+                    b.HasOne("BudgetingApp.Models.BudgetingModels.Budget", "Budget")
+                        .WithMany("ExpenseItems")
+                        .HasForeignKey("BudgetId");
+
                     b.HasOne("BudgetingApp.Models.BudgetingModels.ExpenseCategory", "ExpenseCategory")
                         .WithMany("ExpenseItems")
                         .HasForeignKey("ExpenseCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Budget");
 
                     b.Navigation("ExpenseCategory");
                 });
@@ -206,11 +222,17 @@ namespace BudgetingApp.Migrations
 
             modelBuilder.Entity("BudgetingApp.Models.BudgetingModels.IncomeItem", b =>
                 {
+                    b.HasOne("BudgetingApp.Models.BudgetingModels.Budget", "Budget")
+                        .WithMany("IncomeItems")
+                        .HasForeignKey("BudgetId");
+
                     b.HasOne("BudgetingApp.Models.BudgetingModels.IncomeCategory", "IncomeCategory")
                         .WithMany("IncomeItems")
                         .HasForeignKey("IncomeCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Budget");
 
                     b.Navigation("IncomeCategory");
                 });
@@ -219,7 +241,11 @@ namespace BudgetingApp.Migrations
                 {
                     b.Navigation("ExpenseCategories");
 
+                    b.Navigation("ExpenseItems");
+
                     b.Navigation("IncomeCategories");
+
+                    b.Navigation("IncomeItems");
                 });
 
             modelBuilder.Entity("BudgetingApp.Models.BudgetingModels.ExpenseCategory", b =>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BudgetingApp.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialBudgetingContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -79,11 +79,18 @@ namespace BudgetingApp.Migrations
                     Description = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpenseCategoryId = table.Column<long>(type: "bigint", nullable: false)
+                    ExpenseCategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    BudgetId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ExpenseItems", x => x.ExpenseItemId);
+                    table.ForeignKey(
+                        name: "FK_ExpenseItems_Budgets_BudgetId",
+                        column: x => x.BudgetId,
+                        principalTable: "Budgets",
+                        principalColumn: "BudgetId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ExpenseItems_ExpenseCategories_ExpenseCategoryId",
                         column: x => x.ExpenseCategoryId,
@@ -102,11 +109,18 @@ namespace BudgetingApp.Migrations
                     Description = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IncomeCategoryId = table.Column<long>(type: "bigint", nullable: false)
+                    IncomeCategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    BudgetId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IncomeItems", x => x.IncomeItemId);
+                    table.ForeignKey(
+                        name: "FK_IncomeItems_Budgets_BudgetId",
+                        column: x => x.BudgetId,
+                        principalTable: "Budgets",
+                        principalColumn: "BudgetId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_IncomeItems_IncomeCategories_IncomeCategoryId",
                         column: x => x.IncomeCategoryId,
@@ -121,6 +135,11 @@ namespace BudgetingApp.Migrations
                 column: "BudgetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExpenseItems_BudgetId",
+                table: "ExpenseItems",
+                column: "BudgetId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExpenseItems_ExpenseCategoryId",
                 table: "ExpenseItems",
                 column: "ExpenseCategoryId");
@@ -128,6 +147,11 @@ namespace BudgetingApp.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_IncomeCategories_BudgetId",
                 table: "IncomeCategories",
+                column: "BudgetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncomeItems_BudgetId",
+                table: "IncomeItems",
                 column: "BudgetId");
 
             migrationBuilder.CreateIndex(

@@ -34,7 +34,8 @@ namespace BudgetingApp.Models.BudgetingModels
         // Foreign Relationships
         public long IncomeCategoryId {get; set;}
         public IncomeCategory IncomeCategory {get; set;}
-        public long BudgetId {get; set;}
-        public Budget Budget {get; set;}
+        public long? BudgetId {get; set;}
+        public virtual Budget Budget {get; set;}
+
     }
 }

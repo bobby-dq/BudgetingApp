@@ -21,11 +21,8 @@ namespace BudgetingApp.Controllers
         public IActionResult Index()
         {
             IQueryable<Budget> budgets = context.Budgets
-                .Include(b => b.ExpenseCategories)
-                .Include(b => b.IncomeCategories)
                 .Include(b => b.ExpenseItems)
                 .Include(b => b.IncomeItems);
-            
             return View("Index", budgets);
         }
     }

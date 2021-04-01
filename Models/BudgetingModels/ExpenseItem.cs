@@ -34,7 +34,7 @@ namespace BudgetingApp.Models.BudgetingModels
         // Foreign Relationships
         public long ExpenseCategoryId {get; set;}
         public ExpenseCategory ExpenseCategory {get; set;}
-        public long BudgetId {get; set;}
-        public Budget Budget {get; set;}
+        public long? BudgetId {get; set;}
+        public virtual Budget Budget {get; set;}
     }
 }
