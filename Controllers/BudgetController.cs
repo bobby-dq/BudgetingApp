@@ -22,7 +22,9 @@ namespace BudgetingApp.Controllers
         {
             IQueryable<Budget> budgets = context.Budgets
                 .Include(b => b.ExpenseCategories)
-                .Include(b => b.IncomeCategories);
+                .Include(b => b.IncomeCategories)
+                .Include(b => b.ExpenseItems)
+                .Include(b => b.IncomeItems);
             
             return View("Index", budgets);
         }

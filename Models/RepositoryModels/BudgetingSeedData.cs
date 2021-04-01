@@ -98,48 +98,56 @@ namespace BudgetingApp.Models.RepositoryModels
                         Amount = 12.89m,
                         TransactionDate = new DateTime(2021, 05, 09),
                         ExpenseCategory = expenseCategoryAA,
+                        Budget = budgetA
                     },
                     new ExpenseItem {
                         Description = "Expense Item AAB",
                         Amount = 16.75m,
                         TransactionDate = new DateTime(2021, 05, 10),
                         ExpenseCategory = expenseCategoryAA,
+                        Budget = budgetA
                     },
                     new ExpenseItem {
                         Description = "Expense Item ABA",
                         Amount = 500.76m,
                         TransactionDate = new DateTime(2021, 05, 11),
                         ExpenseCategory = expenseCategoryAB,
+                        Budget = budgetA
                     },
                     new ExpenseItem {
                         Description = "Expense Item ABB",
                         Amount = 122.32m,
                         TransactionDate = new DateTime(202, 05, 12),
                         ExpenseCategory = expenseCategoryAB,
+                        Budget = budgetA
                     },
                     new ExpenseItem {
                         Description = "Expense Item BAA",
                         Amount = 12.89m,
                         TransactionDate = new DateTime(2021, 05, 09),
                         ExpenseCategory = expenseCategoryBA,
+                        Budget = budgetB
                     },
                     new ExpenseItem {
                         Description = "Expense Item BAB",
                         Amount = 26.75m,
                         TransactionDate = new DateTime(2021, 05, 16),
                         ExpenseCategory = expenseCategoryBA,
+                        Budget = budgetB
                     },
                     new ExpenseItem {
                         Description = "Expense Item BBA",
                         Amount = 300.76m,
                         TransactionDate = new DateTime(2021, 05, 17),
                         ExpenseCategory = expenseCategoryBB,
+                        Budget = budgetB
                     },
                     new ExpenseItem {
                         Description = "Expense Item BBB",
                         Amount = 422.32m,
                         TransactionDate = new DateTime(2021, 05, 18),
                         ExpenseCategory = expenseCategoryBB,
+                        Budget = budgetB
                     }
                 );
                 //--------------------------------------------------------------
@@ -150,48 +158,56 @@ namespace BudgetingApp.Models.RepositoryModels
                         Amount = 140.89m,
                         TransactionDate = new DateTime(2021, 05, 09),
                         IncomeCategory = incomeCategoryAA,
+                        Budget = budgetA
                     },
                     new IncomeItem {
                         Description = "Income Item AAB",
                         Amount = 160.75m,
                         TransactionDate = new DateTime(2021, 06, 10),
                         IncomeCategory = incomeCategoryAA,
+                        Budget = budgetA
                     },
                     new IncomeItem {
                         Description = "Income Item ABA",
                         Amount = 5001.76m,
                         TransactionDate = new DateTime(2021, 07, 11),
                         IncomeCategory = incomeCategoryAB,
+                        Budget = budgetA
                     },
                     new IncomeItem {
                         Description = "Income Item ABB",
                         Amount = 1224.32m,
                         TransactionDate = new DateTime(202, 08, 12),
                         IncomeCategory = incomeCategoryAB,
+                        Budget = budgetA
                     },
                     new IncomeItem {
                         Description = "Income Item BAA",
                         Amount = 129.89m,
                         TransactionDate = new DateTime(2021, 09, 09),
                         IncomeCategory = incomeCategoryBA,
+                        Budget = budgetB
                     },
                     new IncomeItem {
                         Description = "Income Item BAB",
                         Amount = 6.75m,
                         TransactionDate = new DateTime(2021, 10, 16),
                         IncomeCategory = incomeCategoryBA,
+                        Budget = budgetB
                     },
                     new IncomeItem {
                         Description = "Income Item BBA",
                         Amount = 00.76m,
                         TransactionDate = new DateTime(2021, 11, 17),
                         IncomeCategory = incomeCategoryBB,
+                        Budget = budgetB
                     },
                     new IncomeItem {
                         Description = "Income Item BBB",
                         Amount = 3224.32m,
                         TransactionDate = new DateTime(2021, 12, 18),
                         IncomeCategory = incomeCategoryBB,
+                        Budget = budgetB
                     }
                 );
                 
