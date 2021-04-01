@@ -25,5 +25,23 @@ namespace BudgetingApp.Controllers
                 .Include(b => b.IncomeItems);
             return View("Index", budgets);
         }
+
+        // HTTP Get Request
+        // A breakdown of a user's budget
+        public async Task<IActionResult> BudgetBreakdown(long id)
+        {
+            Budget budget = await context.Budgets
+                .FirstAsync(b => b.BudgetId == id);
+
+            IQueryable<ExpenseCategory> expenseCategories =  context.ExpenseCategories
+                .Include(ec => ec.ExpenseItems)
+                .Where(ec => ec.BudgetId == id);
+
+            IQueryable<IncomeCategory> incomeCategories =  context.IncomeCategories
+                .Include(ic => ic.IncomeItems)
+                .Where(ic => ic.BudgetId == id);
+            
+            BudgetBreakdown 
+        }
     }
 }

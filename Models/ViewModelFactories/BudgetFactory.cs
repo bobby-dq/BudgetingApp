@@ -6,9 +6,9 @@ namespace BudgetingApp.Models.ViewModelFactories
 {
     public static class BudgetFactory
     {
-        public static BudgetCrud Create(Budget budget) 
+        public static BudgetCrudViewModel Create(Budget budget) 
         {
-            return new BudgetCrud
+            return new BudgetCrudViewModel
             {
                 Budget = budget,
                 Action = "Create",
@@ -17,9 +17,9 @@ namespace BudgetingApp.Models.ViewModelFactories
                 ActionTheme = ""
             };
         }
-        public static BudgetCrud Details(Budget budget)
+        public static BudgetCrudViewModel Details(Budget budget)
         {
-            return new BudgetCrud
+            return new BudgetCrudViewModel
             {
                 Budget = budget,
                 Action = "Details",
@@ -29,9 +29,9 @@ namespace BudgetingApp.Models.ViewModelFactories
             };
         }
 
-        public static BudgetCrud Edit (Budget budget)
+        public static BudgetCrudViewModel Edit (Budget budget)
         {
-            return new BudgetCrud
+            return new BudgetCrudViewModel
             {
                 Budget = budget,
                 Action = "Edit",
@@ -41,9 +41,9 @@ namespace BudgetingApp.Models.ViewModelFactories
             };
         }
 
-        public static BudgetCrud Delete (Budget budget)
+        public static BudgetCrudViewModel Delete (Budget budget)
         {
-            return new BudgetCrud
+            return new BudgetCrudViewModel
             {
                 Budget = budget,
                 Action = "Delete",
@@ -53,9 +53,9 @@ namespace BudgetingApp.Models.ViewModelFactories
             };
         }
 
-        public static BudgetBreakdown Breakdown (Budget budget, IQueryable<IncomeCategory> incomeCategories, IQueryable<ExpenseCategory> expenseCategories)
+        public static BudgetBreakdownViewModel Breakdown (Budget budget, IQueryable<IncomeCategory> incomeCategories, IQueryable<ExpenseCategory> expenseCategories)
         {
-            return new BudgetBreakdown 
+            return new BudgetBreakdownViewModel 
             {
                 Budget = budget,
                 ExpenseCategories = expenseCategories,
@@ -63,9 +63,9 @@ namespace BudgetingApp.Models.ViewModelFactories
             };
         }
 
-        public static BudgetTransactions Transactions (Budget budget, IQueryable<IncomeItem> incomeItems, IQueryable<ExpenseItem> expenseItems)
+        public static BudgetTransactionsViewModel Transactions (Budget budget, IQueryable<IncomeItem> incomeItems, IQueryable<ExpenseItem> expenseItems)
         {
-            return new BudgetTransactions
+            return new BudgetTransactionsViewModel
             {
                 Budget = budget,
                 ExpenseItems = expenseItems,

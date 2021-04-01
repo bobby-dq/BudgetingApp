@@ -3,7 +3,7 @@ using BudgetingApp.Models.BudgetingModels;
 
 namespace BudgetingApp.Models.ViewModels
 {
-    public class BudgetCrud
+    public class BudgetCrudViewModel
     {
         public Budget Budget {get; set;}
         public string Action {get; set;}

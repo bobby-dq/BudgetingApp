@@ -3,7 +3,7 @@ using BudgetingApp.Models.BudgetingModels;
 
 namespace BudgetingApp.Models.ViewModels
 {
-    public class BudgetBreakdown
+    public class BudgetBreakdownViewModel
     {
         public Budget Budget {get; set;}
         public IQueryable<ExpenseCategory> ExpenseCategories {get; set;}
