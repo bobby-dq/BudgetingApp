@@ -12,13 +12,14 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4" />
-    <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css"/>
-    <UpToDateCheckBuilt Include="postcss.config.js" Set="Css"/>
-    <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css"/>
+    <PackageReference Include="Westwind.AspNetCore.LiveReload" Version="0.3.1" />
+    <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
+    <UpToDateCheckBuilt Include="postcss.config.js" Set="Css" />
+    <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
   </ItemGroup>
 
   <Target Name="Tailwind" BeforeTargets="Build">
-    <Exec Command="npm run css:build"/>
+    <Exec Command="npm run css:build" />
   </Target>
 
 </Project>

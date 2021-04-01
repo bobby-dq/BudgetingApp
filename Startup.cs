@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Westwind.AspNetCore.LiveReload;
 using BudgetingApp.Models.RepositoryModels;
 
 namespace BudgetingApp
@@ -33,9 +34,10 @@ namespace BudgetingApp
                 opts.UseSqlServer(Configuration["ConnectionStrings:BudgetingAppConnection"]);
             });
 
+            services.AddLiveReload(config => {});
             //services.AddControllersWithViews().AddRazorRuntimeCompilation();
             //services.AddRazorPages().AddRazorRuntimeCompilation();
-            //services.AddMvc().AddRazorRuntimeCompilation();
+            services.AddMvc().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +47,8 @@ namespace BudgetingApp
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseLiveReload();
             app.UseStatusCodePages();
             app.UseStaticFiles();
 
