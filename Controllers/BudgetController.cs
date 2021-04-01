@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BudgetingApp.Models.RepositoryModels;
 using BudgetingApp.Models.BudgetingModels;
+using BudgetingApp.Models.ViewModels;
+using BudgetingApp.Models.ViewModelFactories;
 
 namespace BudgetingApp.Controllers
 {
@@ -41,7 +43,15 @@ namespace BudgetingApp.Controllers
                 .Include(ic => ic.IncomeItems)
                 .Where(ic => ic.BudgetId == id);
             
-            BudgetBreakdown 
+            BudgetBreakdownViewModel budgetBreakdownViewModel = new BudgetBreakdownViewModel
+            {
+                Budget = budget,
+                ExpenseCategories = expenseCategories,
+                IncomeCategories = incomeCategories
+            };
+            
+            return View("BudgetBreakdown", budgetBreakdownViewModel);
         }
     }
 }
+
