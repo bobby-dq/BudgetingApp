@@ -1,15 +1,33 @@
 @model IQueryable<Budget>
 
 <div>
-    <h1 class="text-white">Budget List</h1>
+    <h1 class="text-white">Here is your budget list!</h1>
 </div>
 
-<ul>
+<div class="grid grid-cols-4 gap-4 text-white">
+    <div><h1>Budget</h1></div>
+    <div><h1>Income</h1></div>
+    <div><h1>Expense</h1></div>
+    <div><h1>Available</h1></div>
+</div>
+
+<div class="grid grid-cols-4 gap-4 text-white">
     @foreach (Budget b in Model)
     {
-        <li class="text-white">
-            @b.Description ||| @b.StartDate.ToString("MMM dd yyyy") ||| @b.EndDate.ToString("MMM dd yyyy")
-        </li>
+        <div>
+            <h1>@b.Description</h1>
+            <p>From: @b.StartDate.ToString("MMM dd yyyy")</p>
+            <p>To: @b.EndDate.ToString("MMM dd yyyy")</p>
+        </div>
+        <div>
+            <h1>@b.IncomeItems.Sum(ii => ii.Amount)</h1>
+        </div>
+        <div>
+            <h1>@b.ExpenseItems.Sum(ei => ei.Amount)</h1>
+        </div>
+        <div>
+            <h1>@(b.IncomeItems.Sum(ii => ii.Amount) - b.ExpenseItems.Sum(ei => ei.Amount))</h1>
+        </div>
     }
-</ul>
+</div>
 
