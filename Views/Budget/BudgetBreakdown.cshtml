@@ -1,0 +1,47 @@
+@model BudgetBreakdownViewModel
+
+<h1>@Model.Budget.Description</h1>
+<p>From: @Model.Budget.StartDate.ToString("MMM dd yyyy")</p>
+<p>To: @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
+
+<p>Total Income: @Model.Budget.IncomeItems.Sum(ii => ii.Amount)</p>
+<p>Total Expenses: @Model.Budget.ExpenseItems.Sum(ei => ei.Amount)</p>
+<p>Account Balance @(Model.Budget.IncomeItems.Sum(ii => ii.Amount) - Model.Budget.ExpenseItems.Sum(ei => ei.Amount))</p>
+
+<p>Total Budgeted Income: @Model.IncomeCategories.Sum(ic => ic.BudgetedAmount)</p>
+<p>Total Budgeted Expenses: @Model.ExpenseCategories.Sum(ec => ec.BudgetedAmount)</p>
+<p>Budgeted Difference: @(@Model.IncomeCategories.Sum(ic => ic.BudgetedAmount) - @Model.ExpenseCategories.Sum(ec => ec.BudgetedAmount))</p>
+
+<div class="grid grid-cols-4 gap-4">
+    <p>Income Category</p>
+    <p>Expected</p>
+    <p>Actual</p>
+    <p>Difference</p>
+</div>
+
+@foreach (IncomeCategory ic in Model.IncomeCategories)
+{
+    <div class="grid grid-cols-4 gap-4">
+        <p>@ic.Description</p>
+        <p>@ic.BudgetedAmount</p>
+        <p>@ic.IncomeItems.Sum(ic => ic.Amount)</p>
+        <p>@(ic.BudgetedAmount - ic.IncomeItems.Sum(ic => ic.Amount))</p>
+    </div>
+}
+
+<div class="grid grid-cols-4 gap-4">
+    <p>Expense Category</p>
+    <p>Budgeted</p>
+    <p>Spent</p>
+    <p>Difference</p>
+</div>
+
+@foreach (ExpenseCategory ec in Model.ExpenseCategories)
+{
+    <div class="grid grid-cols-4 gap-4">
+        <p>@ec.Description</p>
+        <p>@ec.BudgetedAmount</p>
+        <p>@ec.ExpenseItems.Sum(ec => ec.Amount)</p>
+        <p>@(ec.BudgetedAmount - ec.ExpenseItems.Sum(ec => ec.Amount))</p>
+    </div>
+}

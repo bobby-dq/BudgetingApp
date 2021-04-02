@@ -33,6 +33,8 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> BudgetBreakdown(long id)
         {
             Budget budget = await context.Budgets
+                .Include(ec => ec.ExpenseItems)
+                .Include(ic => ic.IncomeItems)
                 .FirstAsync(b => b.BudgetId == id);
 
             IQueryable<ExpenseCategory> expenseCategories =  context.ExpenseCategories
