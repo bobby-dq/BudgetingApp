@@ -29,7 +29,8 @@ namespace BudgetingApp.Controllers
         {
             IQueryable<Budget> budgets = context.Budgets
                 .Include(b => b.ExpenseItems)
-                .Include(b => b.IncomeItems);
+                .Include(b => b.IncomeItems)
+                .AsSplitQuery();
             return View("Index", budgets);
         }
 
@@ -40,14 +41,17 @@ namespace BudgetingApp.Controllers
             Budget budget = await context.Budgets
                 .Include(ec => ec.ExpenseItems)
                 .Include(ic => ic.IncomeItems)
+                .AsSplitQuery()
                 .FirstAsync(b => b.BudgetId == id);
 
             IQueryable<ExpenseCategory> expenseCategories =  context.ExpenseCategories
                 .Include(ec => ec.ExpenseItems)
+                .AsSplitQuery()
                 .Where(ec => ec.BudgetId == id);
 
             IQueryable<IncomeCategory> incomeCategories =  context.IncomeCategories
                 .Include(ic => ic.IncomeItems)
+                .AsSplitQuery()
                 .Where(ic => ic.BudgetId == id);
             
             BudgetBreakdownViewModel budgetBreakdownViewModel = new BudgetBreakdownViewModel
@@ -115,6 +119,23 @@ namespace BudgetingApp.Controllers
                 return RedirectToAction("Index");
             }
             return View("BudgetEditor", BudgetFactory.Edit(preSaveBudget));
+        }
+
+        // HTTP Get Request
+        // Delete a budget
+        public async Task<IActionResult> Delete (long id)
+        {
+            Budget budget = await context.Budgets.FindAsync(id);
+            return View("BudgetEditor", BudgetFactory.Delete(budget));
+        }
+
+        // HTTP Post Request
+        [HttpPost]
+        public async Task<IActionResult> Delete(Budget budget)
+        {
+            context.Budgets.Remove(budget);
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
     }
 }
