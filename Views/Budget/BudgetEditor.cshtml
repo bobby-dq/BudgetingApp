@@ -1,0 +1,36 @@
+@model BudgetCrudViewModel
+
+<partial name="_Validation"/>
+
+<p>@Model.Action: @Model.Budget.Description</p>
+
+<form method="post" asp-controller="Budget" asp-action="@Model.Action">
+    <div>
+        <span asp-validation-for="Budget.UserId"></span>
+        <input type="hidden" asp-for=Budget.UserId readonly/>
+    </div>
+    
+    <div>
+        <span asp-validation-for="Budget.BudgetId"></span>
+        <input type="hidden" asp-for="Budget.BudgetId" readonly/>
+    </div>
+
+    <div>
+        <label asp-for="Budget.Description"></label>
+        <span asp-validation-for="Budget.Description"></span>
+        <input asp-for="Budget.Description" readonly="@Model.ReadOnly"/>
+    </div>
+    
+    <div>
+        <label asp-for="Budget.StartDate"></label>
+        <span asp-validation-for="Budget.Description"></span>
+        <input asp-for="Budget.StartDate" readonly="@Model.ReadOnly" /> 
+    </div>
+
+    @if (Model.ShowAction == true)
+    {
+        <button type="submit">@Model.Action</button>
+    }
+</form>
+
+<a asp-controller="Budget" asp-action="Index">Back to Budget List</a>
