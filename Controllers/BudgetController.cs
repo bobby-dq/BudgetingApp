@@ -64,7 +64,7 @@ namespace BudgetingApp.Controllers
         // Shows a detail of a budget
         public async Task<IActionResult> Details (long id)
         {
-            Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == id);
+            Budget budget = await context.Budgets.FindAsync(id);
             return View("BudgetEditor", BudgetFactory.Details(budget));
         }
 
@@ -93,6 +93,28 @@ namespace BudgetingApp.Controllers
                 return RedirectToAction("Index");
             }
             return View("BudgetEditor", BudgetFactory.Create(budget));
+        }
+
+        // HTTP Get Request
+        // Edits a budget
+        public async Task<IActionResult> Edit(long id)
+        {
+            Budget budget = await context.Budgets.FindAsync(id);
+            return View("BudgetEditor", BudgetFactory.Edit(budget));
+        }
+
+        // HTTP Post request
+        [HttpPost]
+        public async Task<IActionResult> Edit(long id, [FromForm] Budget budget)
+        {
+            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == id);
+            if (ModelState.IsValid)
+            {
+                context.Budgets.Update(budget);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View("BudgetEditor", BudgetFactory.Edit(preSaveBudget));
         }
     }
 }
