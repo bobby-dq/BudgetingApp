@@ -1,9 +1,10 @@
 @model BudgetBreakdownViewModel
 
-<h1>@Model.Budget.Description</h1>
+<a asp-controller="Budget" asp-action="Details" asp-route-id="@Model.Budget.BudgetId">@Model.Budget.Description</a>
 <p>From: @Model.Budget.StartDate.ToString("MMM dd yyyy")</p>
 <p>To: @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
-
+<a asp-controller="Budget" asp-action="Edit" asp-route-id="@Model.Budget.BudgetId">Edit</a>
+<a asp-controller="Budget" asp-action="Delete" asp-route-id="@Model.Budget.BudgetId">Delete</a>
 <p>Total Income: @Model.Budget.IncomeItems.Sum(ii => ii.Amount)</p>
 <p>Total Expenses: @Model.Budget.ExpenseItems.Sum(ei => ei.Amount)</p>
 <p>Account Balance @(Model.Budget.IncomeItems.Sum(ii => ii.Amount) - Model.Budget.ExpenseItems.Sum(ei => ei.Amount))</p>

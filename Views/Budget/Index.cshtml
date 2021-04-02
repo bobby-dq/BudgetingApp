@@ -11,11 +11,15 @@
     <div><h1>Available</h1></div>
 </div>
 
+<a asp-controller="Budget" asp-action="Create">Create Budget</a>
+
 <div class="grid grid-cols-4 gap-4 text-white">
     @foreach (Budget b in Model)
     {
         <div>
-            <h1>@b.Description</h1>
+            <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@b.BudgetId">@b.Description</a>
+            <a asp-controller="Budget" asp-action="Edit" asp-route-id="@b.BudgetId">Edit</a>
+            <a asp-controller="Budget" asp-action="Delete" asp-route-id="@b.BudgetId">Delete</a>
             <p>From: @b.StartDate.ToString("MMM dd yyyy")</p>
             <p>To: @b.EndDate.ToString("MMM dd yyyy")</p>
         </div>
@@ -30,4 +34,6 @@
         </div>
     }
 </div>
+
+
 
