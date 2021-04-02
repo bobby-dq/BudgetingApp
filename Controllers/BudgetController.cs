@@ -54,6 +54,11 @@ namespace BudgetingApp.Controllers
             
             return View("BudgetBreakdown", budgetBreakdownViewModel);
         }
+
+        public async Task<IActionResult> Details (long id)
+        {
+            
+        }
     }
 }
 

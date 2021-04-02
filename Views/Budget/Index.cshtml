@@ -4,6 +4,8 @@
     <h1 class="text-white">Here is your budget list!</h1>
 </div>
 
+<a asp-controller="Budget" asp-action="Create">Create Budget</a>
+
 <div class="grid grid-cols-4 gap-4 text-white">
     <div><h1>Budget</h1></div>
     <div><h1>Income</h1></div>
@@ -11,7 +13,7 @@
     <div><h1>Available</h1></div>
 </div>
 
-<a asp-controller="Budget" asp-action="Create">Create Budget</a>
+
 
 <div class="grid grid-cols-4 gap-4 text-white">
     @foreach (Budget b in Model)
