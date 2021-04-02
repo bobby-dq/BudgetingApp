@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace BudgetingApp.Controllers
     public class BudgetController: Controller
     {
         private BudgetingContext context;
+        private DateTime GetFirstDayOfMonth() => new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        private DateTime GetLastDayOfMonth() => GetFirstDayOfMonth().AddMonths(1).AddDays(-1);
         public BudgetController (BudgetingContext ctx)
         {
             context = ctx;
@@ -55,10 +58,30 @@ namespace BudgetingApp.Controllers
             return View("BudgetBreakdown", budgetBreakdownViewModel);
         }
 
+        // HTTP Get Request
+        // Shows a detail of a budget
         public async Task<IActionResult> Details (long id)
         {
-            
+            Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == id);
+            BudgetCrudViewModel viewModel = BudgetFactory.Details(budget);
+            return View("BudgetEditor", viewModel);
         }
+
+        // HTTP Get Request
+        // Creates a new Budget
+        public IActionResult Create() 
+        {
+            Budget budget = new Budget 
+            {
+                StartDate = GetFirstDayOfMonth(),
+                EndDate = GetLastDayOfMonth(),
+            };
+            BudgetCrudViewModel viewModel = BudgetFactory.Create(budget);
+            return View("BudgetEditor", viewModel);
+        }
+
+        // HTTP Post Request
+        
     }
 }
 

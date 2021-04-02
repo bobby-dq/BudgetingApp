@@ -18,13 +18,19 @@
     <div>
         <label asp-for="Budget.Description"></label>
         <span asp-validation-for="Budget.Description"></span>
-        <input asp-for="Budget.Description" readonly="@Model.ReadOnly"/>
+        <input asp-for="Budget.Description" readonly="@Model.ReadOnly" class="text-black"/>
     </div>
     
     <div>
         <label asp-for="Budget.StartDate"></label>
-        <span asp-validation-for="Budget.Description"></span>
-        <input asp-for="Budget.StartDate" readonly="@Model.ReadOnly" /> 
+        <span asp-validation-for="Budget.StartDate"></span>
+        <input asp-for="Budget.StartDate" readonly="@Model.ReadOnly" class="text-black"/> 
+    </div>
+
+    <div>
+        <label asp-for="Budget.EndDate"></label>
+        <span asp-validation-for="Budget.EndDate"></span>
+        <input asp-for="Budget.EndDate" readonly="@Model.ReadOnly" class="text-black"/> 
     </div>
 
     @if (Model.ShowAction == true)
