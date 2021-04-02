@@ -11,11 +11,13 @@ using BudgetingApp.Models.ViewModelFactories;
 
 namespace BudgetingApp.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class BudgetController: Controller
     {
         private BudgetingContext context;
         private DateTime GetFirstDayOfMonth() => new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         private DateTime GetLastDayOfMonth() => GetFirstDayOfMonth().AddMonths(1).AddDays(-1);
+        private String GetCurrentMonthAndYear() => GetFirstDayOfMonth().ToString("MMMM yyyy");
         public BudgetController (BudgetingContext ctx)
         {
             context = ctx;
@@ -63,8 +65,7 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Details (long id)
         {
             Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == id);
-            BudgetCrudViewModel viewModel = BudgetFactory.Details(budget);
-            return View("BudgetEditor", viewModel);
+            return View("BudgetEditor", BudgetFactory.Details(budget));
         }
 
         // HTTP Get Request
@@ -73,15 +74,26 @@ namespace BudgetingApp.Controllers
         {
             Budget budget = new Budget 
             {
+                Description = $"{GetCurrentMonthAndYear()} Budget",
                 StartDate = GetFirstDayOfMonth(),
                 EndDate = GetLastDayOfMonth(),
             };
-            BudgetCrudViewModel viewModel = BudgetFactory.Create(budget);
-            return View("BudgetEditor", viewModel);
+            return View("BudgetEditor", BudgetFactory.Create(budget));
         }
 
         // HTTP Post Request
-        
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] Budget budget)
+        {
+            if (ModelState.IsValid)
+            {
+                budget.BudgetId = default;
+                context.Budgets.Add(budget);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View("BudgetEditor", BudgetFactory.Create(budget));
+        }
     }
 }
 

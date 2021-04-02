@@ -12,7 +12,7 @@ namespace BudgetingApp.Models.ViewModelFactories
             {
                 Budget = budget,
                 Action = "Create",
-                ReadOnly = true,
+                ReadOnly = false,
                 ShowAction = true,
                 ActionTheme = ""
             };
