@@ -65,6 +65,20 @@ namespace BudgetingApp.Controllers
         }
 
         // HTTP Get Request
+        // Shows a list of the transactions (expense and income items)
+        public async Task<IActionResult> Transactions (long id)
+        {
+            Budget budget = await context.Budgets
+                .Include(ec => ec.ExpenseItems)
+                .Include(ic => ic.IncomeItems)
+                .AsSplitQuery()
+                .FirstAsync(b => b.BudgetId == id);
+            
+            return View("BudgetTransactions", budget);
+            
+        }
+
+        // HTTP Get Request
         // Shows a detail of a budget
         public async Task<IActionResult> Details (long id)
         {
