@@ -68,13 +68,12 @@ namespace BudgetingApp.Controllers
         // Shows a list of the transactions (expense and income items)
         public async Task<IActionResult> Transactions (long id)
         {
-            Budget budget = await context.Budgets
-                .Include(ec => ec.ExpenseItems)
-                .Include(ic => ic.IncomeItems)
-                .AsSplitQuery()
-                .FirstAsync(b => b.BudgetId == id);
-            
-            return View("BudgetTransactions", budget);
+            Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == id);
+            IQueryable<ExpenseItem> expenseItems = context.ExpenseItems.Where(ei => ei.BudgetId == id);
+            IQueryable<IncomeItem> incomeItems = context.IncomeItems.Where(ii => ii.BudgetId == id);
+
+
+            return View("BudgetTransactions", BudgetFactory.Transactions(budget, incomeItems, expenseItems));
             
         }
 
