@@ -46,3 +46,5 @@
         <p>@(ec.BudgetedAmount - ec.ExpenseItems.Sum(ec => ec.Amount))</p>
     </div>
 }
+
+<a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId">See Transactions</a>
