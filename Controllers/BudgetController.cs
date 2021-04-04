@@ -30,7 +30,8 @@ namespace BudgetingApp.Controllers
             IQueryable<Budget> budgets = context.Budgets
                 .Include(b => b.ExpenseItems)
                 .Include(b => b.IncomeItems)
-                .AsSplitQuery();
+                .AsSplitQuery()
+                .OrderByDescending(b => b.StartDate);
             return View("Index", budgets);
         }
 
