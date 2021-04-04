@@ -9,7 +9,7 @@
 
 @foreach(IncomeItem ii in Model.IncomeItems)
 {
-    <div>
+    <div class="grid grid-cols-3 gap-4">
         <p>@ii.Description</p>
         <p>@ii.TransactionDate.ToString("MMM dd yyyy")</p>
         <p>@ii.Amount</p>
@@ -24,7 +24,7 @@
 
 @foreach(ExpenseItem ei in Model.ExpenseItems)
 {
-    <div>
+    <div class="grid grid-cols-3 gap-4">
         <p>@ei.Description</p>
         <p>@ei.TransactionDate.ToString("MMM dd yyyy")</p>
         <p>@ei.Amount</p>

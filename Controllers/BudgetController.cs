@@ -73,7 +73,7 @@ namespace BudgetingApp.Controllers
             IQueryable<IncomeItem> incomeItems = context.IncomeItems.Where(ii => ii.BudgetId == id);
 
 
-            return View("BudgetTransactions", BudgetFactory.Transactions(budget, incomeItems, expenseItems));
+            return View("BudgetTransaction", BudgetFactory.Transactions(budget, incomeItems, expenseItems));
             
         }
 
