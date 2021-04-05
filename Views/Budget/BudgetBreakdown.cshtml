@@ -1,5 +1,19 @@
 @model BudgetBreakdownViewModel
 
+<div>
+    <div>
+        <div>
+            <h1>@Model.Budget.Description</h1>
+            <p>@Model.Budget.StartDate.ToString("MMM dd yyyy") to @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
+        </div>
+        <div>
+
+        </div>
+    </div>
+</div>
+
+
+
 <a asp-controller="Budget" asp-action="Details" asp-route-id="@Model.Budget.BudgetId">@Model.Budget.Description</a>
 <p>From: @Model.Budget.StartDate.ToString("MMM dd yyyy")</p>
 <p>To: @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
