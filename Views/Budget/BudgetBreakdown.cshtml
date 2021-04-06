@@ -8,72 +8,109 @@
     public decimal BudgetedDifference() => TotalBudgetedIncome() - TotalBudgetedExpenses();
     public decimal IncomeDifference() => TotalBudgetedIncome() - TotalActualIncome();
     public decimal ExpenseDifference() => TotalBudgetedExpenses() - TotalActualExpenses();
+    public string PositiveOrNegative(decimal value)
+    {
+        if (value > 0)
+        {
+            return ("text-green-500");
+        }
+        else if (value == 0)
+        {
+            return ("text-black");
+        }
+        else
+        {
+            return ("text-red-500");
+        }
+    }
+    
 }
 
 <div>
     <div>
         <div>
             <div>
-                <h1>@Model.Budget.Description Balance: @TempData["Balance"]</h1>
+                <h1 class="font-bold @PositiveOrNegative(GetBalance()) text-4xl"><a asp-action="Details" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="text-black text-2xl font-normal">@Model.Budget.Description Balance:</a> $@GetBalance()</h1>
                 <p>@Model.Budget.StartDate.ToString("MMM dd yyyy") to @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
             </div>
-            <div>
-
+            <div>  
+                <a asp-action="Edit" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId">Edit</a>
+                <a asp-action="Delete" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId">Delete</a>
+                <a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId">See Transactions</a>
             </div>
         </div>
         <div>
-
+            <div>
+                <h1>@Model.Budget.Description Statistics</h1>
+            </div>
+            <div class="flex flex-row">
+                <div>
+                    <p>Income:</p>
+                    <p>@TotalActualIncome()</p>
+                    <p>Expenses:</p>
+                    <p>@TotalActualExpenses()</p>
+                    <p>Balance:</p>
+                    <p>@GetBalance()</p>
+                </div>
+                <div>
+                    <p>Budgeted Income:</p>
+                    <p>@TotalBudgetedIncome()</p>
+                    <p>Budgeted Expenses:</p>
+                    <p>@TotalBudgetedExpenses()</p>
+                    <p>Budgeted Difference:</p>
+                    <p>@BudgetedDifference()</p>
+                </div>
+                <div>
+                    <p>Budgeted Expenses:</p>
+                    <p>@TotalBudgetedExpenses()</p>
+                    <p>Actual Expenses:</p>
+                    <p>@TotalActualExpenses()</p>
+                    <p>Expense Difference:</p>
+                    <p>@ExpenseDifference()</p>
+                </div>
+                <div>
+                    <p>Budgeted Income:</p>
+                    <p>@TotalBudgetedIncome()</p>
+                    <p>Actual Income:</p>
+                    <p>@TotalActualIncome()</p>
+                    <p>Income Difference:</p>
+                    <p>@IncomeDifference()</p>
+                </div>
+            </div>
         </div>
+        <div class="grid grid-cols-4 gap-4">
+            <p>Income Category</p>
+            <p>Expected</p>
+            <p>Actual</p>
+            <p>Difference</p>
+        </div>
+
+        @foreach (IncomeCategory ic in Model.IncomeCategories)
+        {
+            <div class="grid grid-cols-4 gap-4">
+                <p>@ic.Description</p>
+                <p>@ic.BudgetedAmount</p>
+                <p>@ic.IncomeItems.Sum(ic => ic.Amount)</p>
+                <p>@(ic.BudgetedAmount - ic.IncomeItems.Sum(ic => ic.Amount))</p>
+            </div>
+        }
+
+        <div class="grid grid-cols-4 gap-4">
+            <p>Expense Category</p>
+            <p>Budgeted</p>
+            <p>Spent</p>
+            <p>Difference</p>
+        </div>
+
+        @foreach (ExpenseCategory ec in Model.ExpenseCategories)
+        {
+            <div class="grid grid-cols-4 gap-4">
+                <p>@ec.Description</p>
+                <p>@ec.BudgetedAmount</p>
+                <p>@ec.ExpenseItems.Sum(ec => ec.Amount)</p>
+                <p>@(ec.BudgetedAmount - ec.ExpenseItems.Sum(ec => ec.Amount))</p>
+            </div>
+        }
     </div>
 </div>
 
-
-
-<a asp-controller="Budget" asp-action="Details" asp-route-id="@Model.Budget.BudgetId">@Model.Budget.Description</a>
-<p>From: @Model.Budget.StartDate.ToString("MMM dd yyyy")</p>
-<p>To: @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
-<a asp-controller="Budget" asp-action="Edit" asp-route-id="@Model.Budget.BudgetId">Edit</a>
-<a asp-controller="Budget" asp-action="Delete" asp-route-id="@Model.Budget.BudgetId">Delete</a>
-<p>Total Income: @Model.Budget.IncomeItems.Sum(ii => ii.Amount)</p>
-<p>Total Expenses: @Model.Budget.ExpenseItems.Sum(ei => ei.Amount)</p>
-<p>Account Balance @(Model.Budget.IncomeItems.Sum(ii => ii.Amount) - Model.Budget.ExpenseItems.Sum(ei => ei.Amount))</p>
-
-<p>Total Budgeted Income: @Model.IncomeCategories.Sum(ic => ic.BudgetedAmount)</p>
-<p>Total Budgeted Expenses: @Model.ExpenseCategories.Sum(ec => ec.BudgetedAmount)</p>
-<p>Budgeted Difference: @(@Model.IncomeCategories.Sum(ic => ic.BudgetedAmount) - @Model.ExpenseCategories.Sum(ec => ec.BudgetedAmount))</p>
-
-<div class="grid grid-cols-4 gap-4">
-    <p>Income Category</p>
-    <p>Expected</p>
-    <p>Actual</p>
-    <p>Difference</p>
-</div>
-
-@foreach (IncomeCategory ic in Model.IncomeCategories)
-{
-    <div class="grid grid-cols-4 gap-4">
-        <p>@ic.Description</p>
-        <p>@ic.BudgetedAmount</p>
-        <p>@ic.IncomeItems.Sum(ic => ic.Amount)</p>
-        <p>@(ic.BudgetedAmount - ic.IncomeItems.Sum(ic => ic.Amount))</p>
-    </div>
-}
-
-<div class="grid grid-cols-4 gap-4">
-    <p>Expense Category</p>
-    <p>Budgeted</p>
-    <p>Spent</p>
-    <p>Difference</p>
-</div>
-
-@foreach (ExpenseCategory ec in Model.ExpenseCategories)
-{
-    <div class="grid grid-cols-4 gap-4">
-        <p>@ec.Description</p>
-        <p>@ec.BudgetedAmount</p>
-        <p>@ec.ExpenseItems.Sum(ec => ec.Amount)</p>
-        <p>@(ec.BudgetedAmount - ec.ExpenseItems.Sum(ec => ec.Amount))</p>
-    </div>
-}
-
-<a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId">See Transactions</a>
