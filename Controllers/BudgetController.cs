@@ -62,11 +62,6 @@ namespace BudgetingApp.Controllers
                 IncomeCategories = incomeCategories
             };
             
-            TempData["TotalBudgetedExpenses"] = expenseCategories.Sum(ec => ec.BudgetedAmount);
-            TempData["TotalExpecetedIncome"] = incomeCategories.Sum(ic => ic.BudgetedAmount);
-            TempData["TotalActualExpenses"] = budget.ExpenseItems.Sum(ei => ei.Amount);
-            TempData["TotalActualIncome"] = budget.IncomeItems.Sum(ii => ii.Amount);
-            TempData["Balance"] = (decimal)TempData["TotalActualIncome"] - (decimal)TempData["TotalActualExpenses"];
             return View("BudgetBreakdown", budgetBreakdownViewModel);
         }
 

@@ -1,4 +1,14 @@
 @model BudgetBreakdownViewModel
+@functions{
+    public decimal TotalBudgetedExpenses() => Model.ExpenseCategories.Sum(ec => ec.BudgetedAmount);
+    public decimal TotalBudgetedIncome() => Model.IncomeCategories.Sum(ic => ic.BudgetedAmount);
+    public decimal TotalActualExpenses() => Model.Budget.ExpenseItems.Sum(ei => ei.Amount);
+    public decimal TotalActualIncome() => Model.Budget.IncomeItems.Sum(ii => ii.Amount);
+    public decimal GetBalance() => TotalActualIncome() - TotalActualExpenses();
+    public decimal BudgetedDifference() => TotalBudgetedIncome() - TotalBudgetedExpenses();
+    public decimal IncomeDifference() => TotalBudgetedIncome() - TotalActualIncome();
+    public decimal ExpenseDifference() => TotalBudgetedExpenses() - TotalActualExpenses();
+}
 
 <div>
     <div>
