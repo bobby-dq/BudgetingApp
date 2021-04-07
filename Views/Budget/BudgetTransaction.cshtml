@@ -1,32 +1,63 @@
 @model BudgetTransactionsViewModel
 
-<p>@Model.Budget.Description Transactions</p> 
-<div class="grid grid-cols-3 gap-4">
-    <p>Income Item</p>
-    <p>Date</p>
-    <p>Amount</p>
-</div>
-
-@foreach(IncomeItem ii in Model.IncomeItems)
-{
-    <div class="grid grid-cols-3 gap-4">
-        <p>@ii.Description</p>
-        <p>@ii.TransactionDate.ToString("MMM dd yyyy")</p>
-        <p>@ii.Amount</p>
+<div>
+    <div>
+        <div class="mt-2 mb-10">
+            <div class="my-2">
+                <h1 class="font-bold text-4xl"><a asp-action="Details" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="text-black text-2xl font-normal">@Model.Budget.Description Transactions</a></h1>
+                <p>@Model.Budget.StartDate.ToString("MMM dd yyyy") to @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
+            </div>
+            <div class="my-1">  
+                <a asp-action="Edit" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                <a asp-action="Delete" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-green-500 p-2 bg-gray-100 shadow-sm hover:bg-gray-200 hover:text-green-600">See Budget Breakdown</a>
+            </div>
+        </div>
+        <div class="bg-indigo-50 border-2 border-indigo-100 shadow-lg flex flex-col mb-5">
+            <div class="bg-indigo-200 w-full h-full flex flex-row justify-between md:px-2 py-1 px-1">
+                <h1 class="text-center text-lg font-bold text-indigo-700 py-1">Income Transactions</h1>
+            </div>
+            <div class="grid grid-cols-4 gap-1 bg-indigo-100 md:p-2 p-1">
+                <p>Item</p>
+                <p class="text-right">Amount</p>
+                <p class="text-right">Date</p>
+                <p class="text-right">Actions</p>
+            </div>
+            @foreach (IncomeItem ii in Model.IncomeItems)
+            {
+                <div class="min-h-10 hover:bg-indigo-100 grid grid-cols-4 gap-1 md:px-2 px-1 py-1">
+                    <a asp-action="Details" asp-controller="IncomeItem" asp-route-id="@ii.IncomeItemId" class="hover:underline">@ii.Description</a>
+                    <p class="text-right">@ii.Amount</p>
+                    <p class="text-right">@ii.TransactionDate.ToString("MMM dd yyyy")
+                    <div class="text-right">
+                        <a asp-action="Edit" asp-controller="IncomeCategory" asp-route-id="@ii.IncomeCategoryId" class="mr-2 hover:shadow-md"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                        <a asp-action="Delete" asp-controller="IncomeCategory" asp-route-id="@ii.IncomeCategoryId" class="hover:shadow-md"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                    </div>
+                </div>
+            }    
+        </div>
+        <div class="bg-pink-50 border-2 border-pink-100 shadow-lg flex flex-col mb-5">
+            <div class="bg-pink-200 w-full h-full flex flex-row justify-between md:px-2 py-1 px-1">
+                <h1 class="text-center text-lg font-bold text-pink-700 py-1">Expense Transactions</h1>
+            </div>
+            <div class="grid grid-cols-4 gap-1 bg-pink-100 md:p-2 p-1">
+                <p>Item</p>
+                <p class="text-right">Amount</p>
+                <p class="text-right">Date</p>
+                <p class="text-right">Actions</p>
+            </div>
+            @foreach (ExpenseItem ei in Model.ExpenseItems)
+            {
+                <div class="min-h-10 hover:bg-pink-100 grid grid-cols-4 gap-1 md:px-2 px-1 py-1">
+                    <a asp-action="Details" asp-controller="ExpenseItem" asp-route-id="@ei.ExpenseItemId" class="hover:underline">@ei.Description</a>
+                    <p class="text-right">@ei.Amount</p>
+                    <p class="text-right">@ei.TransactionDate.ToString("MMM dd yyyy")
+                    <div class="text-right">
+                        <a asp-action="Edit" asp-controller="ExpenseItem" asp-route-id="@ei.ExpenseItemId" class="mr-2 hover:shadow-md"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                        <a asp-action="Delete" asp-controller="ExpenseItem" asp-route-id="@ei.ExpenseItemId" class="hover:shadow-md"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                    </div>
+                </div>
+            }    
+        </div>
     </div>
-}
-
-<div class="grid grid-cols-3 gap-4">
-    <p>Expense Item</p>
-    <p>Date</p>
-    <p>Amount</p>
 </div>
-
-@foreach(ExpenseItem ei in Model.ExpenseItems)
-{
-    <div class="grid grid-cols-3 gap-4">
-        <p>@ei.Description</p>
-        <p>@ei.TransactionDate.ToString("MMM dd yyyy")</p>
-        <p>@ei.Amount</p>
-    </div>
-}

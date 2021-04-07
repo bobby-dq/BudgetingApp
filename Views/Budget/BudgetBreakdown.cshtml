@@ -1,4 +1,106 @@
 @model BudgetBreakdownViewModel
+
+<div>
+    <div>
+        <div>
+            <div class="my-2">
+                <h1 class="font-bold @PositiveOrNegative(GetBalance()) text-4xl"><a asp-action="Details" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="text-black text-2xl font-normal">@Model.Budget.Description Balance:</a> $@GetBalance()</h1>
+                <p>@Model.Budget.StartDate.ToString("MMM dd yyyy") to @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
+            </div>
+            <div class="my-1">  
+                <a asp-action="Edit" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                <a asp-action="Delete" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                <a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId" class="text-green-500 p-2 bg-gray-100 shadow-sm hover:bg-gray-200 hover:text-green-600">See Transactions</a>
+            </div>
+        </div>
+        <div class="flex flex-col mb-5">
+            <div class="self-center pb-2">
+                <h1 class="text-xl font-bold">@Model.Budget.Description Statistics</h1>
+            </div>
+            <div class="grid gap-3 md:grid-cols-4 grid-cols-2">
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p class="">Income:</p>
+                    <p class="text-lg font-bold">@TotalActualIncome()</p>
+                    <p >Expenses:</p>
+                    <p class="text-lg font-bold">@TotalActualExpenses()</p>
+                    <p class="">Balance:</p>
+                    <p class="text-lg font-bold @PositiveOrNegative(GetBalance())">@GetBalance()</p>
+                </div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p>Budgeted Income:</p>
+                    <p class="text-lg font-bold">@TotalBudgetedIncome()</p>
+                    <p>Budgeted Expenses:</p>
+                    <p class="text-lg font-bold">@TotalBudgetedExpenses()</p>
+                    <p>Budgeted Difference:</p>
+                    <p class="text-lg font-bold @PositiveOrNegative(BudgetedDifference())">@BudgetedDifference()</p>
+                </div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p>Budgeted Expenses:</p>
+                    <p class="text-lg font-bold">@TotalBudgetedExpenses()</p>
+                    <p>Actual Expenses:</p>
+                    <p class="text-lg font-bold">@TotalActualExpenses()</p>
+                    <p>Expense Difference:</p>
+                    <p class="text-lg font-bold @PositiveOrNegative(ExpenseDifference())">@ExpenseDifference()</p>
+                </div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p>Budgeted Income:</p>
+                    <p class="text-lg font-bold">@TotalBudgetedIncome()</p>
+                    <p>Actual Income:</p>
+                    <p class="text-lg font-bold">@TotalActualIncome()</p>
+                    <p>Income Difference:</p>
+                    <p class="text-lg font-bold @PositiveOrNegative(@IncomeDifference())">@IncomeDifference()</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-indigo-50 border-2 border-indigo-100 shadow-lg flex flex-col mb-5">
+            <div class="bg-indigo-200 w-full h-full flex flex-row justify-between md:px-2 py-1 px-1">
+                <h1 class="text-center text-lg font-bold text-indigo-700 py-1">Income</h1>
+                <a asp-action="Create" asp-controller="IncomeCategory" asp-route-id="@Model.Budget.BudgetId" class="self-center text-sm bg-gray-50 hover:bg-gray-100 p-1 shadow-sm rounded-sm">
+                    Add Income Category                </a>
+            </div>
+            <div class="grid grid-cols-4 gap-1 bg-indigo-100 md:p-2 p-1">
+                <p>Category</p>
+                <p class="text-right">Expected</p>
+                <p class="text-right">Actual</p>
+                <p class="text-right">Difference</p>
+            </div>
+            @foreach (IncomeCategory ic in Model.IncomeCategories)
+            {
+                <div class="hover:bg-indigo-100 grid grid-cols-4 gap-1 md:px-2 px-1">
+                    <a asp-action="IncomeCategoryBreakdown" asp-controller="IncomeCategory" asp-route-id="@ic.IncomeCategoryId" class="hover:underline">@ic.Description</a>
+                    <p class="text-right">@ic.BudgetedAmount</p>
+                    <p class="text-right">@ic.IncomeItems.Sum(ic => ic.Amount)</p>
+                    <p class="text-right font-bold mb-2 @PositiveOrNegative(ic.IncomeItems.Sum(ic => ic.Amount) - ic.BudgetedAmount)">@(ic.IncomeItems.Sum(ic => ic.Amount) - ic.BudgetedAmount)</p>
+                </div>
+            }    
+        </div>
+
+        <div class="bg-pink-50 border-2 border-pink-100 shadow-lg flex flex-col mb-5">
+            <div class="bg-pink-200 w-full h-full flex flex-row justify-between md:px-2 py-1 px-1">
+                <h1 class="text-center text-lg font-bold text-pink-700 py-1">Expenses</h1>
+                <a asp-action="Create" asp-controller="ExpenseCategory" asp-route-id="@Model.Budget.BudgetId" class="self-center text-sm bg-gray-50 hover:bg-gray-100 p-1 shadow-sm rounded-sm">
+                    Add Expense Category
+                </a>
+            </div>
+            <div class="grid grid-cols-4 gap-1 bg-pink-100 md:p-2 p-1">
+                <p>Category</p>
+                <p class="text-right">Expected</p>
+                <p class="text-right">Actual</p>
+                <p class="text-right">Difference</p>
+            </div>
+            @foreach (ExpenseCategory ec in Model.ExpenseCategories)
+            {
+                <div class="hover:bg-pink-100 grid grid-cols-4 gap-1 md:px-2 px-1">
+                    <a asp-action="ExpenseCategoryBreakdown" asp-controller="ExpenseCategory" asp-route-id="@ec.ExpenseCategoryId" class="hover:underline">@ec.Description</a>
+                    <p class="text-right">@ec.BudgetedAmount</p>
+                    <p class="text-right">@ec.ExpenseItems.Sum(ec => ec.Amount)</p>
+                    <p class="text-right font-bold mb-2 @PositiveOrNegative(ec.BudgetedAmount - ec.ExpenseItems.Sum(ec => ec.Amount))">@(ec.BudgetedAmount - ec.ExpenseItems.Sum(ec => ec.Amount))</p>
+                </div>
+            }    
+        </div>
+    </div>
+</div>
+
 @functions{
     public decimal TotalBudgetedExpenses() => Model.ExpenseCategories.Sum(ec => ec.BudgetedAmount);
     public decimal TotalBudgetedIncome() => Model.IncomeCategories.Sum(ic => ic.BudgetedAmount);
@@ -25,106 +127,3 @@
     }
     
 }
-
-<div>
-    <div>
-        <div>
-            <div class="my-2">
-                <h1 class="font-bold @PositiveOrNegative(GetBalance()) text-4xl"><a asp-action="Details" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="text-black text-2xl font-normal">@Model.Budget.Description Balance:</a> $@GetBalance()</h1>
-                <p>@Model.Budget.StartDate.ToString("MMM dd yyyy") to @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
-            </div>
-            <div class="my-1">  
-                <a asp-action="Edit" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
-                <a asp-action="Delete" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
-                <a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId" class="text-green-500 p-2 bg-gray-100 shadow-sm hover:bg-gray-200">See Transactions</a>
-            </div>
-            <div class="my-2">
-                
-            </div>
-        </div>
-        <div class="flex flex-col mb-5">
-            <div class="self-center pb-2">
-                <h1 class="text-xl font-bold">@Model.Budget.Description Statistics</h1>
-            </div>
-            <div class="grid gap-3 md:grid-cols-4 grid-cols-2">
-                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md">
-                    <p class="">Income:</p>
-                    <p class="text-lg font-bold">@TotalActualIncome()</p>
-                    <p >Expenses:</p>
-                    <p class="text-lg font-bold">@TotalActualExpenses()</p>
-                    <p class="">Balance:</p>
-                    <p class="text-lg font-bold @PositiveOrNegative(GetBalance())">@GetBalance()</p>
-                </div>
-                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md">
-                    <p>Budgeted Income:</p>
-                    <p class="text-lg font-bold">@TotalBudgetedIncome()</p>
-                    <p>Budgeted Expenses:</p>
-                    <p class="text-lg font-bold">@TotalBudgetedExpenses()</p>
-                    <p>Budgeted Difference:</p>
-                    <p class="text-lg font-bold @PositiveOrNegative(BudgetedDifference())">@BudgetedDifference()</p>
-                </div>
-                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md">
-                    <p>Budgeted Expenses:</p>
-                    <p class="text-lg font-bold">@TotalBudgetedExpenses()</p>
-                    <p>Actual Expenses:</p>
-                    <p class="text-lg font-bold">@TotalActualExpenses()</p>
-                    <p>Expense Difference:</p>
-                    <p class="text-lg font-bold @PositiveOrNegative(ExpenseDifference())">@ExpenseDifference()</p>
-                </div>
-                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md">
-                    <p>Budgeted Income:</p>
-                    <p class="text-lg font-bold">@TotalBudgetedIncome()</p>
-                    <p>Actual Income:</p>
-                    <p class="text-lg font-bold">@TotalActualIncome()</p>
-                    <p>Income Difference:</p>
-                    <p class="text-lg font-bold @PositiveOrNegative(@IncomeDifference())">@IncomeDifference()</p>
-                </div>
-            </div>
-        </div>
-        <div class="bg-green-50 border-2 border-green-100 shadow-lg flex flex-col mb-5">
-            <div class="bg-green-200 w-full h-full">
-                <h1 class="text-center text-lg font-bold text-green-700">Income</h1>
-                <a asp-action="Create" asp-controller="IncomeCategory" asp-route-id="@Model.Budget.BudgetId" class="text-center block bg-gray-100 hover:bg-gray-200 py-1">
-                    Add Income Category
-                </a>
-            </div>
-            <div class="grid grid-cols-4 gap-1 bg-green-100 md:p-2 p-1">
-                <p>Category</p>
-                <p>Expected</p>
-                <p>Actual</p>
-                <p>Difference</p>
-            </div>
-            @foreach (IncomeCategory ic in Model.IncomeCategories)
-            {
-                <div class="grid grid-cols-4 gap-1 md:px-2 px-1">
-                    <p>@ic.Description</p>
-                    <p>@ic.BudgetedAmount</p>
-                    <p>@ic.IncomeItems.Sum(ic => ic.Amount)</p>
-                    <p class="font-bold mb-2 @PositiveOrNegative(ic.BudgetedAmount - ic.IncomeItems.Sum(ic => ic.Amount))">@(ic.BudgetedAmount - ic.IncomeItems.Sum(ic => ic.Amount))</p>
-                </div>
-            }    
-        </div>
-
-
-
-        
-
-        <div class="grid grid-cols-4 gap-4">
-            <p>Expense Category</p>
-            <p>Budgeted</p>
-            <p>Spent</p>
-            <p>Difference</p>
-        </div>
-
-        @foreach (ExpenseCategory ec in Model.ExpenseCategories)
-        {
-            <div class="grid grid-cols-4 gap-4">
-                <p>@ec.Description</p>
-                <p>@ec.BudgetedAmount</p>
-                <p>@ec.ExpenseItems.Sum(ec => ec.Amount)</p>
-                <p>@(ec.BudgetedAmount - ec.ExpenseItems.Sum(ec => ec.Amount))</p>
-            </div>
-        }
-    </div>
-</div>
-
