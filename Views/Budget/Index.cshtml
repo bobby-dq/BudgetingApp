@@ -1,16 +1,16 @@
 @model IQueryable<Budget>
 
-<div class="shadow-2xl pt-2 pb-5 rounded-md bg-gray-50 text-black">
-    <div class="m-2 shadow-lg rounded-md font-bold text-gray-900 text-4xl flex justify-center py-4 bg-gray-200">
+<div class="shadow-2xl pt-2 pb-5 rounded-sm bg-gray-50 text-black">
+    <div class="m-2 shadow-lg rounded-sm font-bold text-gray-900 text-4xl flex justify-center py-4 bg-gray-200">
         <h1>Your Budget List</h1>
     </div>
-    <div class="m-2 shadow-lg hover:bg-gray-400 rounded-md font-bold text-gray-900 text-xl flex justify-center bg-gray-300">
+    <div class="m-2 shadow-lg hover:bg-gray-400 rounded-sm font-bold text-gray-900 text-xl flex justify-center bg-gray-300">
         <a class="text-center py-2 w-full h-full" asp-controller="Budget" asp-action="Create">Create Budget</a>
     </div>
     <div class="grid gap-3 auto-rows-auto grid-cols-1 md:grid-cols-3">
     @foreach (Budget b in Model)
     {
-        <div class="rounded-md p-3 grid m-2 -mb-2 bg-gray-100 shadow-lg border-gray-100 hover:border-gray-300 border-2">
+        <div class="p-3 grid m-2 rounded-sm -mb-2 bg-gray-100 shadow-lg border-gray-100 hover:border-gray-300 border-2">
             <div class="flex flex-col justify-between">
                 <div class="flex-1">
                     <div class="flex">
@@ -52,7 +52,7 @@
                     <p class="text-left text-lg font-bold mb-2">@b.IncomeItems.Sum(ii => ii.Amount)</p>
                 </div>
             </div>
-            <div class="-mx-3 -mb-3 rounded-b-md grid bg-gray-300 border-2 border-gray-300 shadow-md hover:bg-gray-400 text-center">
+            <div class="-mx-3 -mb-3 grid bg-gray-300 shadow-md hover:bg-gray-400 text-center">
                 <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@b.BudgetId" class="h-full p-1">See @b.Description Breakdown</a>
             </div>
         </div>

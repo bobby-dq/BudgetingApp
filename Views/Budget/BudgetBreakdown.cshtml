@@ -29,52 +29,55 @@
 <div>
     <div>
         <div>
-            <div>
+            <div class="my-2">
                 <h1 class="font-bold @PositiveOrNegative(GetBalance()) text-4xl"><a asp-action="Details" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="text-black text-2xl font-normal">@Model.Budget.Description Balance:</a> $@GetBalance()</h1>
                 <p>@Model.Budget.StartDate.ToString("MMM dd yyyy") to @Model.Budget.EndDate.ToString("MMM dd yyyy")</p>
             </div>
-            <div>  
-                <a asp-action="Edit" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId">Edit</a>
-                <a asp-action="Delete" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId">Delete</a>
-                <a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId">See Transactions</a>
+            <div class="my-1">  
+                <a asp-action="Edit" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                <a asp-action="Delete" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                <a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId" class="text-green-500 p-2 bg-gray-100 shadow-sm hover:bg-gray-200">See Transactions</a>
+            </div>
+            <div class="my-2">
+                
             </div>
         </div>
-        <div>
-            <div>
-                <h1>@Model.Budget.Description Statistics</h1>
+        <div class="flex flex-col">
+            <div class="self-center">
+                <h1 class="text-xl font-bold">@Model.Budget.Description Statistics</h1>
             </div>
-            <div class="flex flex-row">
-                <div>
-                    <p>Income:</p>
-                    <p>@TotalActualIncome()</p>
-                    <p>Expenses:</p>
-                    <p>@TotalActualExpenses()</p>
-                    <p>Balance:</p>
-                    <p>@GetBalance()</p>
+            <div class="grid gap-3 md:grid-cols-4 grid-cols-2">
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md">
+                    <p class="">Income:</p>
+                    <p class="text-lg font-bold">@TotalActualIncome()</p>
+                    <p >Expenses:</p>
+                    <p class="text-lg font-bold">@TotalActualExpenses()</p>
+                    <p class="">Balance:</p>
+                    <p class="text-lg font-bold @PositiveOrNegative(GetBalance())">@GetBalance()</p>
                 </div>
-                <div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md">
                     <p>Budgeted Income:</p>
-                    <p>@TotalBudgetedIncome()</p>
+                    <p class="text-lg font-bold">@TotalBudgetedIncome()</p>
                     <p>Budgeted Expenses:</p>
-                    <p>@TotalBudgetedExpenses()</p>
+                    <p class="text-lg font-bold">@TotalBudgetedExpenses()</p>
                     <p>Budgeted Difference:</p>
-                    <p>@BudgetedDifference()</p>
+                    <p class="text-lg font-bold @PositiveOrNegative(BudgetedDifference())">@BudgetedDifference()</p>
                 </div>
-                <div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md">
                     <p>Budgeted Expenses:</p>
-                    <p>@TotalBudgetedExpenses()</p>
+                    <p class="text-lg font-bold">@TotalBudgetedExpenses()</p>
                     <p>Actual Expenses:</p>
-                    <p>@TotalActualExpenses()</p>
+                    <p class="text-lg font-bold">@TotalActualExpenses()</p>
                     <p>Expense Difference:</p>
-                    <p>@ExpenseDifference()</p>
+                    <p class="text-lg font-bold @PositiveOrNegative(ExpenseDifference())">@ExpenseDifference()</p>
                 </div>
-                <div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md">
                     <p>Budgeted Income:</p>
-                    <p>@TotalBudgetedIncome()</p>
+                    <p class="text-lg font-bold">@TotalBudgetedIncome()</p>
                     <p>Actual Income:</p>
-                    <p>@TotalActualIncome()</p>
+                    <p class="text-lg font-bold">@TotalActualIncome()</p>
                     <p>Income Difference:</p>
-                    <p>@IncomeDifference()</p>
+                    <p class="text-lg font-bold @PositiveOrNegative(@IncomeDifference())">@IncomeDifference()</p>
                 </div>
             </div>
         </div>
