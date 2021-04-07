@@ -12,7 +12,7 @@
     {
         if (value > 0)
         {
-            return ("text-green-500");
+            return ("text-green-600");
         }
         else if (value == 0)
         {
@@ -42,8 +42,8 @@
                 
             </div>
         </div>
-        <div class="flex flex-col">
-            <div class="self-center">
+        <div class="flex flex-col mb-5">
+            <div class="self-center pb-2">
                 <h1 class="text-xl font-bold">@Model.Budget.Description Statistics</h1>
             </div>
             <div class="grid gap-3 md:grid-cols-4 grid-cols-2">
@@ -81,22 +81,33 @@
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-4 gap-4">
-            <p>Income Category</p>
-            <p>Expected</p>
-            <p>Actual</p>
-            <p>Difference</p>
+        <div class="bg-green-50 border-2 border-green-100 shadow-lg flex flex-col mb-5">
+            <div class="bg-green-200 w-full h-full">
+                <h1 class="text-center text-lg font-bold text-green-700">Income</h1>
+                <a asp-action="Create" asp-controller="IncomeCategory" asp-route-id="@Model.Budget.BudgetId" class="text-center block bg-gray-100 hover:bg-gray-200 py-1">
+                    Add Income Category
+                </a>
+            </div>
+            <div class="grid grid-cols-4 gap-1 bg-green-100 md:p-2 p-1">
+                <p>Category</p>
+                <p>Expected</p>
+                <p>Actual</p>
+                <p>Difference</p>
+            </div>
+            @foreach (IncomeCategory ic in Model.IncomeCategories)
+            {
+                <div class="grid grid-cols-4 gap-1 md:px-2 px-1">
+                    <p>@ic.Description</p>
+                    <p>@ic.BudgetedAmount</p>
+                    <p>@ic.IncomeItems.Sum(ic => ic.Amount)</p>
+                    <p class="font-bold mb-2 @PositiveOrNegative(ic.BudgetedAmount - ic.IncomeItems.Sum(ic => ic.Amount))">@(ic.BudgetedAmount - ic.IncomeItems.Sum(ic => ic.Amount))</p>
+                </div>
+            }    
         </div>
 
-        @foreach (IncomeCategory ic in Model.IncomeCategories)
-        {
-            <div class="grid grid-cols-4 gap-4">
-                <p>@ic.Description</p>
-                <p>@ic.BudgetedAmount</p>
-                <p>@ic.IncomeItems.Sum(ic => ic.Amount)</p>
-                <p>@(ic.BudgetedAmount - ic.IncomeItems.Sum(ic => ic.Amount))</p>
-            </div>
-        }
+
+
+        
 
         <div class="grid grid-cols-4 gap-4">
             <p>Expense Category</p>
