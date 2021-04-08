@@ -11,5 +11,6 @@ namespace BudgetingApp.Models.ViewModels
         public string ObjectTheme {get;set;}
         public bool ShowAction {get; set;}
         public string ActionTheme {get;set;}
+        public string ButtonTheme {get;set;}
     }
 }

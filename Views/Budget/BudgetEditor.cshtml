@@ -2,41 +2,75 @@
 
 <partial name="_Validation"/>
 
-<p>@Model.Action: @Model.Budget.Description</p>
-
-<form method="post" asp-controller="Budget" asp-action="@Model.Action">
-    <div>
-        <span asp-validation-for="Budget.UserId"></span>
-        <input type="hidden" asp-for=Budget.UserId readonly/>
+<div class="mt-3 bg-gray-50 shadow-2xl rounded-t-md" class="@Model.ActionTheme">
+    <div class="@Model.ActionTheme text-2xl underline font-bold bg-gray-100 text-center p-3 shadow-lg rounded-sm">
+        @if (Model.Action != "Create")
+        {
+            <p>@Model.Action: @Model.Budget.Description</p>
+        }
+        else
+        {
+            <p>@Model.Action Budget</p>
+        }
     </div>
-    
-    <div>
-        <span asp-validation-for="Budget.BudgetId"></span>
-        <input type="hidden" asp-for="Budget.BudgetId" readonly/>
-    </div>
+    <div class="p-2">
+        <form method="post" asp-controller="Budget" asp-action="@Model.Action">
+            <div>
+                <span asp-validation-for="Budget.UserId"></span>
+                <input type="hidden" asp-for=Budget.UserId readonly/>
+            </div>
+            <div>
+                <span asp-validation-for="Budget.BudgetId"></span>
+                <input type="hidden" asp-for="Budget.BudgetId" readonly/>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="Budget.Description"></label>
+                </div>
+                <div>
+                    <span class="text-red-500 text-sm" asp-validation-for="Budget.Description"></span>
+                </div>
+                <div>
+                    <input asp-for="Budget.Description" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/>
+                </div>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="Budget.StartDate"></label>
+                </div>
+                <div>
+                    <span asp-validation-for="Budget.StartDate" class="text-red-500 text-sm"></span>
+                </div>
+                <div>
+                    <input asp-for="Budget.StartDate" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/> 
+                </div>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="Budget.EndDate"></label>
+                </div>
+                <div>
+                    <span asp-validation-for="Budget.EndDate" class="text-red-500 text-sm"></span>
+                </div>
+                <div>
+                    <input asp-for="Budget.EndDate" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/> 
+                </div>
+            </div>
 
-    <div>
-        <label asp-for="Budget.Description"></label>
-        <span asp-validation-for="Budget.Description"></span>
-        <input asp-for="Budget.Description" readonly="@Model.ReadOnly" class="text-black"/>
+            @if (Model.ShowAction == true)
+            {
+                <div class="@Model.ButtonTheme  p-2 -m-2 mt-2 rounded-b-sm">
+                    <button type="submit" class="w-full font-bold">@Model.Action</button>
+                </div>
+            }
+        </form>
     </div>
-    
-    <div>
-        <label asp-for="Budget.StartDate"></label>
-        <span asp-validation-for="Budget.StartDate"></span>
-        <input asp-for="Budget.StartDate" readonly="@Model.ReadOnly" class="text-black"/> 
-    </div>
+</div>
+<div class="mt-5 bg-gray-200 p-2 border border-gray-300 rounded-lg shadow-lg hover:bg-gray-300 mb-10">
+    <a asp-controller="Budget" asp-action="Index" class="block w-full" >Back to Budget List</a>
+</div>
 
-    <div>
-        <label asp-for="Budget.EndDate"></label>
-        <span asp-validation-for="Budget.EndDate"></span>
-        <input asp-for="Budget.EndDate" readonly="@Model.ReadOnly" class="text-black"/> 
-    </div>
 
-    @if (Model.ShowAction == true)
-    {
-        <button type="submit">@Model.Action</button>
-    }
-</form>
 
-<a asp-controller="Budget" asp-action="Index">Back to Budget List</a>
+
+

@@ -14,7 +14,8 @@ namespace BudgetingApp.Models.ViewModelFactories
                 Action = "Create",
                 ReadOnly = false,
                 ShowAction = true,
-                ActionTheme = ""
+                ActionTheme = "bg-green-200",
+                ButtonTheme = "bg-green-200 hover:bg-green-300"
             };
         }
         public static BudgetCrudViewModel Details(Budget budget)
@@ -25,7 +26,8 @@ namespace BudgetingApp.Models.ViewModelFactories
                 Action = "Details",
                 ReadOnly = true,
                 ShowAction = false,
-                ActionTheme = ""
+                ActionTheme = "",
+                ButtonTheme = ""
             };
         }
 
@@ -37,7 +39,8 @@ namespace BudgetingApp.Models.ViewModelFactories
                 Action = "Edit",
                 ReadOnly = false,
                 ShowAction = true,
-                ActionTheme = ""
+                ActionTheme = "bg-yellow-200",
+                ButtonTheme = "bg-yellow-200 hover:bg-yellow-300"
             };
         }
 
@@ -49,7 +52,8 @@ namespace BudgetingApp.Models.ViewModelFactories
                 Action = "Delete",
                 ReadOnly = true,
                 ShowAction = true,
-                ActionTheme = ""                
+                ActionTheme = "bg-red-200",
+                ButtonTheme = "bg-red-200 hover:bg-red-300"               
             };
         }
 
