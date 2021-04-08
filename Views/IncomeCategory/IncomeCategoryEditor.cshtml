@@ -72,8 +72,8 @@
     </div>
 </div>
 <div class="mt-5 bg-gray-200 border border-gray-300 rounded-lg shadow-lg  mb-10 flex justify-between">
-    <a asp-controller="Budget" asp-action="Breakdown" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="text-center w-full p-2 hover:bg-gray-300">IncomeCategory Breakdown</a>
-    <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-center w-full p-2 hover:bg-gray-300">Budget Breakdown</a>
+    <a asp-controller="IncomeCategory" asp-action="Breakdown" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="text-center border-r border-gray-300 w-full p-2 hover:bg-gray-300">@Model.IncomeCategory.Description Breakdown</a>
+    <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-center w-full p-2 hover:bg-gray-300">@Model.Budget.Description Breakdown</a>
 </div>
 
 
