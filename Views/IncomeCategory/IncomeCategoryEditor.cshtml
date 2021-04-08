@@ -1,0 +1,82 @@
+@model IncomeCategoryCrudViewModel
+<partial name="_Validation"/>
+
+<div class="mt-3 bg-gray-50 shadow-2xl rounded-t-md" class="@Model.ActionTheme">
+    <div class="@Model.ActionTheme text-2xl underline font-bold bg-gray-100 text-center p-3 shadow-lg rounded-sm">
+        @if (Model.Action != "Create")
+        {
+            <p>@Model.Action: @Model.IncomeCategory.Description</p>
+            <p class="text-lg no-underline text-gray-700">Budget: @Model.Budget.Description</p>
+        }
+        else
+        {
+            <p>@Model.Action Income Category</p>
+            <p class="text-lg no-underline text-gray-800">Budget: @Model.Budget.Description</p>
+        }
+    </div>
+    <div class="p-2">
+        <form method="post" asp-controller="IncomeCategory" asp-action="@Model.Action">
+            <div>
+                <span asp-validation-for="IncomeCategory.UserId"></span>
+                <input type="hidden" asp-for=IncomeCategory.UserId readonly/>
+            </div>
+            <div>
+                <span asp-validation-for="IncomeCategory.BudgetId"></span>
+                <input type="hidden" asp-for="IncomeCategory.BudgetId" readonly/>
+            </div>
+            <div>
+                <span asp-validation-for="IncomeCategory.IncomeCategoryId"></span>
+                <input type="hidden" asp-for="IncomeCategory.IncomeCategoryId" readonly/>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="IncomeCategory.Description"></label>
+                </div>
+                <div>
+                    <span class="text-red-500 text-sm" asp-validation-for="IncomeCategory.Description"></span>
+                </div>
+                <div>
+                    <input asp-for="IncomeCategory.Description" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/>
+                </div>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="IncomeCategory.BudgetedAmount"></label>
+                </div>
+                <div>
+                    <span asp-validation-for="IncomeCategory.BudgetedAmount" class="text-red-500 text-sm"></span>
+                </div>
+                <div>
+                    <input asp-for="IncomeCategory.BudgetedAmount" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/> 
+                </div>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="IncomeCategory.ExpectedDate"></label>
+                </div>
+                <div>
+                    <span asp-validation-for="IncomeCategory.ExpectedDate" class="text-red-500 text-sm"></span>
+                </div>
+                <div>
+                    <input asp-for="IncomeCategory.ExpectedDate" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/> 
+                </div>
+            </div>
+
+            @if (Model.ShowAction == true)
+            {
+                <div class="@Model.ButtonTheme  p-2 -m-2 mt-2 rounded-b-sm">
+                    <button type="submit" class="w-full font-bold">@Model.Action</button>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+<div class="mt-5 bg-gray-200 border border-gray-300 rounded-lg shadow-lg  mb-10 flex justify-between">
+    <a asp-controller="Budget" asp-action="Breakdown" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="text-center w-full p-2 hover:bg-gray-300">IncomeCategory Breakdown</a>
+    <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-center w-full p-2 hover:bg-gray-300">Budget Breakdown</a>
+</div>
+
+
+
+
+

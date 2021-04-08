@@ -73,7 +73,7 @@ namespace BudgetingApp.Controllers
             
             if (ModelState.IsValid)
             {
-                incomeCategory.BudgetId = default;
+                incomeCategory.IncomeCategoryId = default;
                 incomeCategory.Budget = default;
                 context.IncomeCategories.Add(incomeCategory);
                 await context.SaveChangesAsync();
