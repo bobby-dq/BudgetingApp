@@ -15,8 +15,8 @@ namespace BudgetingApp.Models.ViewModelFactories
                 Action="Create",
                 ReadOnly = false,
                 ShowAction = true,
-                ActionTheme = "bg-green-200",
-                ButtonTheme = "bg-green-200 hover:bg-green-300"
+                ActionTheme = "bg-indigo-200",
+                ButtonTheme = "bg-indigo-200 hover:bg-indigo-300"
             };
         }
 

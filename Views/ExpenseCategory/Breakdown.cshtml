@@ -1,0 +1,86 @@
+@model ExpenseCategoryBreakdownViewModel
+
+<div>
+    <div>
+        <div>
+            <div class="my-2">
+                <h1 class="text-4xl"><a asp-action="Details" asp-controller="ExpenseCategory" asp-route-id="@Model.ExpenseCategory.ExpenseCategoryId" class="text-black text-2xl font-normal">@Model.ExpenseCategory.Description</a></h1>
+                <p>Budget: @Model.Budget.Description</p>
+                @if (Model.ExpenseCategory.ExpectedDate != null)
+                {
+                    <p>Expected Date: @(Model.ExpenseCategory.ExpectedDate.Value.ToString("MMM dd yyyy"))</p>
+                }
+            </div>
+            <div class="my-3">  
+                <a asp-action="Edit" asp-controller="ExpenseCategory" asp-route-id="@Model.ExpenseCategory.ExpenseCategoryId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                <a asp-action="Delete" asp-controller="ExpenseCategory" asp-route-id="@Model.ExpenseCategory.ExpenseCategoryId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-green-700 p-2 bg-gray-100 shadow-sm hover:bg-gray-200 hover:text-green-600">@Model.Budget.Description Breakdown</a>
+            </div>
+        </div>
+        <div class="flex flex-col mb-5">
+            <div class="self-center pb-2">
+                <h1 class="text-xl font-bold">@Model.ExpenseCategory.Description Statistics</h1>
+            </div>
+            <div class="grid gap-3 grid-cols-3">
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p class="">Budgeted:</p>
+                    <p class="text-lg font-bold">@Model.ExpenseCategory.BudgetedAmount</p>
+                </div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p>Actual:</p>
+                    <p class="text-lg font-bold">@TotalActualExpense()</p>
+                </div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p>Difference: </p>
+                    <p class="text-lg @PositiveOrNegative(ExpenseDifference()) font-bold">@ExpenseDifference()</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-pink-50 border-2 border-pink-100 shadow-lg flex flex-col mb-5">
+            <div class="bg-pink-200 w-full h-full flex flex-row justify-between md:px-2 py-1 px-1">
+                <h1 class="text-center text-lg font-bold text-pink-700 py-1">Expense Transactions</h1>
+                <a asp-action="Create" asp-controller="ExpenseItem" asp-route-id="@Model.ExpenseCategory.ExpenseCategoryId" class="self-center text-sm bg-gray-50 hover:bg-gray-100 p-1 shadow-sm rounded-sm">
+                    Add Expense Transaction
+                </a>
+            </div>
+            <div class="grid grid-cols-4 gap-1 bg-pink-100 md:p-2 p-1">
+                <p>Description</p>
+                <p class="text-right">Amount</p>
+                <p class="text-right">Date</p>
+                <p class="text-right">Action</p>
+            </div>
+            @foreach (ExpenseItem ei in Model.ExpenseItems)
+            {
+                <div class="hover:bg-pink-100 grid grid-cols-4 gap-1 md:px-2 px-1">
+                    <a asp-action="Details" asp-controller="ExpenseItem" asp-route-id="@ei.ExpenseItemId" class="hover:underline">@ei.Description</a>
+                    <p class="text-right">@ei.Amount</p>
+                    <p class="text-right">@ei.TransactionDate.ToString("MMM dd yyyy")</p>
+                    <div class="my-1 text-right">  
+                        <a asp-action="Edit" asp-controller="ExpenseItem" asp-route-id="@ei.ExpenseItemId" class=" shadow-sm hover:bg-gray-200 hover:shadow-xl mr-5"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                        <a asp-action="Delete" asp-controller="ExpenseItem" asp-route-id="@ei.ExpenseItemId" class="shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                    </div>
+                </div>
+            }    
+        </div>
+    </div>
+</div>
+
+@functions {
+    public decimal TotalActualExpense() => Model.ExpenseItems.Sum(ei => ei.Amount); 
+    public decimal ExpenseDifference() => Model.ExpenseCategory.BudgetedAmount - TotalActualExpense();
+    public string PositiveOrNegative(decimal value)
+    {
+        if (value > 0)
+        {
+            return ("text-green-600");
+        }
+        else if (value == 0)
+        {
+            return ("text-black");
+        }
+        else
+        {
+            return ("text-red-500");
+        }
+    }
+}

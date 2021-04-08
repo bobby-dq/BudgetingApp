@@ -11,7 +11,7 @@
                     <p>Expected Date: @(Model.IncomeCategory.ExpectedDate.Value.ToString("MMM dd yyyy"))</p>
                 }
             </div>
-            <div class="my-1">  
+            <div class="my-3">  
                 <a asp-action="Edit" asp-controller="IncomeCategory" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
                 <a asp-action="Delete" asp-controller="IncomeCategory" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
                 <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-green-700 p-2 bg-gray-100 shadow-sm hover:bg-gray-200 hover:text-green-600">@Model.Budget.Description Breakdown</a>
