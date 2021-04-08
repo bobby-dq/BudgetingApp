@@ -108,7 +108,7 @@ namespace BudgetingApp.Controllers
                 budget.BudgetId = default;
                 context.Budgets.Add(budget);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("BudgetBreakdown", "Budget", new {id = budget.BudgetId});
             }
             return View("BudgetEditor", BudgetFactory.Create(budget));
         }
@@ -130,7 +130,7 @@ namespace BudgetingApp.Controllers
             {
                 context.Budgets.Update(budget);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("BudgetBreakdown", "Budget", new {id = budget.BudgetId});
             }
             return View("BudgetEditor", BudgetFactory.Edit(preSaveBudget));
         }
