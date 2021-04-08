@@ -66,8 +66,9 @@
         </form>
     </div>
 </div>
-<div class="mt-5 bg-gray-200 p-2 border border-gray-300 rounded-lg shadow-lg hover:bg-gray-300 mb-10">
-    <a asp-controller="Budget" asp-action="Index" class="block w-full" >Back to Budget List</a>
+<div class="mt-5 bg-gray-200 border border-gray-300 rounded-lg shadow-lg  mb-10 flex justify-between">
+    <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-center border-r border-gray-300 w-full p-2 hover:bg-gray-300">Budget Breakdown</a>
+    <a asp-controller="Budget" asp-action="Index" class="w-full hover:bg-gray-300 p-2 text-center" >Budget List</a>
 </div>
 
 
