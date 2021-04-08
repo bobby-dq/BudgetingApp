@@ -1,0 +1,86 @@
+@model IncomeCategoryBreakdownViewModel
+
+<div>
+    <div>
+        <div>
+            <div class="my-2">
+                <h1 class="text-4xl"><a asp-action="Details" asp-controller="IncomeCategory" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="text-black text-2xl font-normal">@Model.IncomeCategory.Description</a></h1>
+                <p>Budget: @Model.Budget.Description</p>
+                @if (Model.IncomeCategory.ExpectedDate != null)
+                {
+                    <p>Expected Date: @(Model.IncomeCategory.ExpectedDate.Value.ToString("MMM dd yyyy"))</p>
+                }
+            </div>
+            <div class="my-1">  
+                <a asp-action="Edit" asp-controller="IncomeCategory" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                <a asp-action="Delete" asp-controller="IncomeCategory" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-green-700 p-2 bg-gray-100 shadow-sm hover:bg-gray-200 hover:text-green-600">@Model.Budget.Description Breakdown</a>
+            </div>
+        </div>
+        <div class="flex flex-col mb-5">
+            <div class="self-center pb-2">
+                <h1 class="text-xl font-bold">@Model.IncomeCategory.Description Statistics</h1>
+            </div>
+            <div class="grid gap-3 grid-cols-3">
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p class="">Expected:</p>
+                    <p class="text-lg font-bold">@Model.IncomeCategory.BudgetedAmount</p>
+                </div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p>Actual:</p>
+                    <p class="text-lg font-bold">@TotalActualIncome()</p>
+                </div>
+                <div class="bg-gray-100 p-2 shadow-xl border-2 rounded-md hover:border-gray-500 hover:shadow-2xl">
+                    <p>Difference: </p>
+                    <p class="text-lg @PositiveOrNegative(IncomeDifference()) font-bold">@IncomeDifference()</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-indigo-50 border-2 border-indigo-100 shadow-lg flex flex-col mb-5">
+            <div class="bg-indigo-200 w-full h-full flex flex-row justify-between md:px-2 py-1 px-1">
+                <h1 class="text-center text-lg font-bold text-indigo-700 py-1">Income Transactions</h1>
+                <a asp-action="Create" asp-controller="IncomeItem" asp-route-id="@Model.IncomeCategory.IncomeCategoryId" class="self-center text-sm bg-gray-50 hover:bg-gray-100 p-1 shadow-sm rounded-sm">
+                    Add Income Transaction
+                </a>
+            </div>
+            <div class="grid grid-cols-4 gap-1 bg-indigo-100 md:p-2 p-1">
+                <p>Description</p>
+                <p class="text-right">Amount</p>
+                <p class="text-right">Date</p>
+                <p class="text-right">Action</p>
+            </div>
+            @foreach (IncomeItem ii in Model.IncomeItems)
+            {
+                <div class="hover:bg-indigo-100 grid grid-cols-4 gap-1 md:px-2 px-1">
+                    <a asp-action="Details" asp-controller="IncomeItem" asp-route-id="@ii.IncomeItemId" class="hover:underline">@ii.Description</a>
+                    <p class="text-right">@ii.Amount</p>
+                    <p class="text-right">@ii.TransactionDate.ToString("MMM dd yyyy")</p>
+                    <div class="my-1 text-right">  
+                        <a asp-action="Edit" asp-controller="IncomeItem" asp-route-id="@ii.IncomeItemId" class=" shadow-sm hover:bg-gray-200 hover:shadow-xl mr-5"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
+                        <a asp-action="Delete" asp-controller="IncomeItem" asp-route-id="@ii.IncomeItemId" class="shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
+                    </div>
+                </div>
+            }    
+        </div>
+    </div>
+</div>
+
+@functions {
+    public decimal TotalActualIncome() => Model.IncomeItems.Sum(ii => ii.Amount); 
+    public decimal IncomeDifference() => TotalActualIncome() - Model.IncomeCategory.BudgetedAmount;
+    public string PositiveOrNegative(decimal value)
+    {
+        if (value > 0)
+        {
+            return ("text-green-600");
+        }
+        else if (value == 0)
+        {
+            return ("text-black");
+        }
+        else
+        {
+            return ("text-red-500");
+        }
+    }
+}

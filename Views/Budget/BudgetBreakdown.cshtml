@@ -10,7 +10,7 @@
             <div class="my-1">  
                 <a asp-action="Edit" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-pencil-9-240.png" class="w-5 inline-block"></a>
                 <a asp-action="Delete" asp-controller="Budget" asp-route-id="@Model.Budget.BudgetId" class="p-2 bg-gray-100 shadow-sm hover:bg-gray-200"><img src="/icons/iconmonstr-trash-can-1-240.png" class="w-5 inline-block"></a>
-                <a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId" class="text-green-500 p-2 bg-gray-100 shadow-sm hover:bg-gray-200 hover:text-green-600">See Transactions</a>
+                <a asp-controller="Budget" asp-action="Transactions" asp-route-id="@Model.Budget.BudgetId" class="text-green-700 p-2 bg-gray-100 shadow-sm hover:bg-gray-200 hover:text-green-600">See Transactions</a>
             </div>
         </div>
         <div class="flex flex-col mb-5">
@@ -69,7 +69,7 @@
             {
                 <div class="hover:bg-indigo-100 grid grid-cols-4 gap-1 md:px-2 px-1">
                     <div class="pt-1">
-                        <a asp-action="IncomeCategoryBreakdown" asp-controller="IncomeCategory" asp-route-id="@ic.IncomeCategoryId" class="hover:underline">@ic.Description</a>
+                        <a asp-action="Breakdown" asp-controller="IncomeCategory" asp-route-id="@ic.IncomeCategoryId" class="hover:underline">@ic.Description</a>
                         <a asp-action="Create" asp-controller="IncomeItem" asp-route-id="@ic.IncomeCategoryId" class="w-min px-5 rounded-md border border-indigo-200 bg-gray-100 shadow-sm mb-1 hover:bg-gray-200 hover:shadow-lg">Add</a>
                     </div>
                     <p class="text-right">@ic.BudgetedAmount</p>
@@ -97,7 +97,7 @@
             {
                 <div class="hover:bg-pink-100 grid grid-cols-4 gap-1 md:px-2 px-1">
                     <div class="pt-1">
-                        <a asp-action="ExpenseCategoryBreakdown" asp-controller="ExpenseCategory" asp-route-id="@ec.ExpenseCategoryId" class="hover:underline">@ec.Description</a>
+                        <a asp-action="Breakdown" asp-controller="ExpenseCategory" asp-route-id="@ec.ExpenseCategoryId" class="hover:underline">@ec.Description</a>
                         <a asp-action="Create" asp-controller="ExpenseItem" asp-route-id="@ec.ExpenseCategoryId" class="w-min border border-pink-200  rounded-md px-5 bg-gray-100 shadow-sm mb-1 hover:bg-gray-200 hover:shadow-lg">Add</a>
                     </div>
                     <p class="text-right">@ec.BudgetedAmount</p>
@@ -116,7 +116,7 @@
     public decimal TotalActualIncome() => Model.Budget.IncomeItems.Sum(ii => ii.Amount);
     public decimal GetBalance() => TotalActualIncome() - TotalActualExpenses();
     public decimal BudgetedDifference() => TotalBudgetedIncome() - TotalBudgetedExpenses();
-    public decimal IncomeDifference() => TotalBudgetedIncome() - TotalActualIncome();
+    public decimal IncomeDifference() => TotalActualIncome() - TotalBudgetedIncome();
     public decimal ExpenseDifference() => TotalBudgetedExpenses() - TotalActualExpenses();
     public string PositiveOrNegative(decimal value)
     {
