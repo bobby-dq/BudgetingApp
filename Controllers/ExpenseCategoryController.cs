@@ -31,7 +31,8 @@ namespace BudgetingApp.Controllers
                 .FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
             
             IQueryable<ExpenseItem> incomeItems = context.ExpenseItems
-                .Where(ei => ei.ExpenseCategoryId == id);
+                .Where(ei => ei.ExpenseCategoryId == id)
+                .OrderByDescending(ei=> ei.TransactionDate);
 
             ExpenseCategoryBreakdownViewModel expenseCategoryBreakdownViewModel = new ExpenseCategoryBreakdownViewModel 
             {

@@ -70,8 +70,13 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Transactions (long id)
         {
             Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == id);
-            IQueryable<ExpenseItem> expenseItems = context.ExpenseItems.Where(ei => ei.BudgetId == id);
-            IQueryable<IncomeItem> incomeItems = context.IncomeItems.Where(ii => ii.BudgetId == id);
+            IQueryable<ExpenseItem> expenseItems = context.ExpenseItems
+                .Where(ei => ei.BudgetId == id)
+                .OrderByDescending(ei => ei.TransactionDate);
+
+            IQueryable<IncomeItem> incomeItems = context.IncomeItems
+                .Where(ii => ii.BudgetId == id)
+                .OrderByDescending(ii => ii.TransactionDate);
 
 
             return View("BudgetTransaction", BudgetFactory.Transactions(budget, incomeItems, expenseItems));
