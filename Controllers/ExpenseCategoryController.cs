@@ -95,7 +95,7 @@ namespace BudgetingApp.Controllers
 
         // HTTP Post Request
         [HttpPost]
-        public async Task<IActionResult> Edit ([FromForm]ExpenseCategory expenseCategory, long id)
+        public async Task<IActionResult> Edit ([FromForm]ExpenseCategory expenseCategory)
         {
             Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
             if (ModelState.IsValid)

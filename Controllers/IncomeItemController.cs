@@ -47,12 +47,16 @@ namespace BudgetingApp.Controllers
             return View("IncomeItemEditor", IncomeItemFactory.Create(budget, incomeCategory, incomeItem));
         }
 
-        // HTTP Post
+        // HTTP Post Request
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] IncomeItem incomeItem, long id)
         {
-            IncomeCategory preSaveIncomeCategory = await context.IncomeCategories.AsNoTracking().FirstAsync(ic => ic.IncomeCategoryId == id);
-            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == preSaveIncomeCategory.BudgetId);
+            IncomeCategory preSaveIncomeCategory = await context.IncomeCategories
+                .AsNoTracking()
+                .FirstAsync(ic => ic.IncomeCategoryId == id);
+            Budget preSaveBudget = await context.Budgets
+                .AsNoTracking()
+                .FirstAsync(b => b.BudgetId == preSaveIncomeCategory.BudgetId);
 
             if (ModelState.IsValid)
             {
@@ -65,6 +69,63 @@ namespace BudgetingApp.Controllers
             }
 
             return View("IncomeItemEditor", IncomeItemFactory.Create(preSaveBudget, preSaveIncomeCategory, incomeItem));
+        }
+
+        // HTTP Get Request
+        // Edit an income item
+        public async Task<IActionResult> Edit(long id)
+        {   
+            IncomeItem incomeItem = await context.IncomeItems.FindAsync(id);
+            IncomeCategory incomeCategory = await context.IncomeCategories.FindAsync(incomeItem.BudgetId);
+            Budget budget = await context.Budgets.FindAsync(incomeItem.BudgetId);
+            
+            return View("IncomeItemEditor", IncomeItemFactory.Edit(budget, incomeCategory, incomeItem));
+        }
+
+        // HTTP Post request
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromForm] IncomeItem incomeItem)
+        {
+            IncomeCategory preSaveIncomeCategory = await context.IncomeCategories
+                .AsNoTracking()
+                .FirstAsync(ic => ic.IncomeCategoryId == incomeItem.IncomeCategoryId);
+            Budget preSaveBudget = await context.Budgets
+                .AsNoTracking()
+                .FirstAsync(b => b.BudgetId == incomeItem.BudgetId);
+
+            if (ModelState.IsValid)
+            {
+                context.IncomeItems.Update(incomeItem);
+                await context.SaveChangesAsync();
+                return RedirectToAction("BudgetBreakdown", "Budget", new {id = preSaveBudget.BudgetId});
+            }
+
+            return View("IncomeItemEditor", IncomeItemFactory.Edit(preSaveBudget, preSaveIncomeCategory, incomeItem));
+        }
+
+        // HTTP Get request
+        public async Task<IActionResult> Delete (long id)
+        {
+            IncomeItem incomeItem = await context.IncomeItems.FindAsync(id);
+            IncomeCategory incomeCategory = await context.IncomeCategories.FindAsync(incomeItem.BudgetId);
+            Budget budget = await context.Budgets.FindAsync(incomeItem.BudgetId);
+            
+            return View("IncomeItemEditor", IncomeItemFactory.Delete(budget, incomeCategory, incomeItem));
+        }
+
+        // HTTP Post request
+        [HttpPost]
+        public async Task<IActionResult> Delete (IncomeItem incomeItem)
+        {
+            Budget preDeleteBudget = await context.Budgets
+                .AsNoTracking()
+                .FirstAsync(b => b.BudgetId == incomeItem.BudgetId);
+            IncomeCategory preDeleteIncomeCategory = await context.IncomeCategories
+                .AsNoTracking()
+                .FirstAsync(ic => ic.IncomeCategoryId == incomeItem.IncomeCategoryId);
+            context.IncomeItems.Remove(incomeItem);
+            await context.SaveChangesAsync();
+            return RedirectToAction("BudgetBreakdown", "Budget", new {id = preDeleteBudget.BudgetId});
         }
     }
 }
