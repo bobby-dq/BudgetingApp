@@ -97,7 +97,7 @@ namespace BudgetingApp.Controllers
             {
                 context.ExpenseItems.Update(expenseItem);
                 await context.SaveChangesAsync();
-                return RedirectToAction("BudgetBreakdown", "Budget", new {id = preSaveBudget.BudgetId});
+                return RedirectToAction("Breakdown", "ExpenseCategory", new {id = preSaveExpenseCategory.ExpenseCategoryId});
             }
 
             return View("ExpenseItemEditor", ExpenseItemFactory.Edit(preSaveBudget, preSaveExpenseCategory, expenseItem));
@@ -125,7 +125,7 @@ namespace BudgetingApp.Controllers
                 .FirstAsync(ec => ec.ExpenseCategoryId == expenseItem.ExpenseCategoryId);
             context.ExpenseItems.Remove(expenseItem);
             await context.SaveChangesAsync();
-            return RedirectToAction("BudgetBreakdown", "Budget", new {id = preDeleteBudget.BudgetId});
+            return RedirectToAction("Breakdown", "ExpenseCategory", new {id = preDeleteExpenseCategory.ExpenseCategoryId});
         }
     }
 }
