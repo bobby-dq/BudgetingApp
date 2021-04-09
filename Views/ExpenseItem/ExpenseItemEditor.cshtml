@@ -1,0 +1,91 @@
+@model ExpenseItemCrudViewModel
+<partial name="_Validation"/>
+
+<div class="mt-3 bg-gray-50 shadow-2xl rounded-t-md" class="@Model.ActionTheme">
+    <div class="@Model.ActionTheme text-2xl underline font-bold bg-gray-100 text-center p-3 shadow-lg rounded-sm">
+        @if (Model.Action != "Create")
+        {
+            <p>@Model.Action: @Model.ExpenseItem.Description</p>
+            <p class="text-lg no-underline text-gray-700">Budget: @Model.Budget.Description</p>
+            <p class="text-lg no-underline text-gray-700">Expense Category: @Model.ExpenseCategory.Description</p>
+        }
+        else
+        {
+            <p>@Model.Action Expense Item</p>
+            <p class="text-lg no-underline text-gray-800">Budget: @Model.Budget.Description</p>
+            <p class="text-lg no-underline text-gray-700">Expense Category: @Model.ExpenseCategory.Description</p>
+        }
+    </div>
+    <div class="p-2">
+        <form method="post" asp-controller="ExpenseItem" asp-action="@Model.Action">
+            <div>
+                <span asp-validation-for="ExpenseItem.UserId"></span>
+                <input type="hidden" asp-for=ExpenseItem.UserId readonly/>
+            </div>
+            <div>
+                <span asp-validation-for="ExpenseItem.BudgetId"></span>
+                <input type="hidden" asp-for="ExpenseItem.BudgetId" readonly/>
+            </div>
+            <div>
+                <span asp-validation-for="ExpenseItem.ExpenseCategoryId"></span>
+                <input type="hidden" asp-for="ExpenseItem.ExpenseCategoryId" readonly/>
+            </div>
+            <div>
+                <span asp-validation-for="ExpenseItem.ExpenseItemId"></span>
+                <input type="hidden" asp-for="ExpenseItem.ExpenseItemId" readonly/>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="ExpenseItem.Description"></label>
+                </div>
+                <div>
+                    <span class="text-red-500 text-sm" asp-validation-for="ExpenseItem.Description"></span>
+                </div>
+                <div>
+                    <input asp-for="ExpenseItem.Description" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/>
+                </div>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="ExpenseItem.Amount"></label>
+                </div>
+                <div>
+                    <span asp-validation-for="ExpenseItem.Amount" class="text-red-500 text-sm"></span>
+                </div>
+                <div>
+                    <input asp-for="ExpenseItem.Amount" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/> 
+                </div>
+            </div>
+            <div class="mb-5">
+                <div class="">
+                    <label asp-for="ExpenseItem.TransactionDate"></label>
+                </div>
+                <div>
+                    <span asp-validation-for="ExpenseItem.TransactionDate" class="text-red-500 text-sm"></span>
+                </div>
+                <div>
+                    <input asp-for="ExpenseItem.TransactionDate" readonly="@Model.ReadOnly" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200"/> 
+                </div>
+            </div>
+
+            @if (Model.ShowAction == true)
+            {
+                <div class="@Model.ButtonTheme  p-2 -m-2 mt-2 rounded-b-sm">
+                    <button type="submit" class="w-full font-bold">@Model.Action</button>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+<div class="mt-5 bg-gray-200 border border-gray-300 rounded-lg shadow-lg  mb-10 flex justify-between">
+    <a asp-controller="ExpenseCategory" asp-action="Breakdown" asp-route-id="@Model.ExpenseCategory.ExpenseCategoryId" class="text-center border-r border-gray-300 w-full p-2 hover:bg-gray-300">@Model.ExpenseCategory.Description Breakdown</a>
+    <a asp-controller="Budget" asp-action="BudgetBreakdown" asp-route-id="@Model.Budget.BudgetId" class="text-center w-full p-2 hover:bg-gray-300">@Model.Budget.Description Breakdown</a>
+</div>
+ 
+
+
+
+
+
+
