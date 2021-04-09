@@ -46,5 +46,25 @@ namespace BudgetingApp.Controllers
 
             return View("IncomeItemEditor", IncomeItemFactory.Create(budget, incomeCategory, incomeItem));
         }
+
+        // HTTP Post
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] IncomeItem incomeItem, long id)
+        {
+            IncomeCategory preSaveIncomeCategory = await context.IncomeCategories.AsNoTracking().FirstAsync(ic => ic.IncomeCategoryId == id);
+            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == preSaveIncomeCategory.BudgetId);
+
+            if (ModelState.IsValid)
+            {
+                incomeItem.IncomeItemId = default;
+                incomeItem.Budget = default;
+                incomeItem.IncomeCategory = default;
+                context.IncomeItems.Add(incomeItem);
+                await context.SaveChangesAsync();
+                return RedirectToAction("BudgetBreakdown", "Budget", new {id = preSaveBudget.BudgetId});
+            }
+
+            return View("IncomeItemEditor", IncomeItemFactory.Create(preSaveBudget, preSaveIncomeCategory, incomeItem));
+        }
     }
 }
