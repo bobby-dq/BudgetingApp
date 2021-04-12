@@ -51,11 +51,11 @@ namespace BudgetingApp
             app.UseLiveReload();
             app.UseStatusCodePages();
             app.UseStaticFiles();
+            app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
