@@ -36,26 +36,6 @@ namespace BudgetingApp
                 opts.UseSqlServer(Configuration["ConnectionStrings:BudgetingAppConnection"]);
             });
 
-            services.AddAuthentication 
-                (options =>
-                {
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie()
-                .AddOpenIdConnect("Auth0", options =>
-                {
-                    options.Authority = $"https://{Configuration["Auth0:Domain"]}";
-                    options.ClientId = Configuration["Auth0:ClientId"];
-                    options.ClientSecret = Configuration["Auth0:ClientSecret"];
-                    options.ResponseType = OpenIdConnectResponseType.Code;
-                    options.Scope.Clear();
-                    options.Scope.Add("openid");
-                    options.CallbackPath = new PathString("/callback");
-                    options.ClaimsIssuer = "Auth0";
-                });
-
             services.AddLiveReload(config => {});
             services.AddMvc().AddRazorRuntimeCompilation();
         }
