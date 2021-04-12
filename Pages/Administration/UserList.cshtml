@@ -1,0 +1,56 @@
+@page
+@model ListModel
+
+<div>
+    <div class="p-2 text-center text-2xl font-bold my-2 bg-gray-100 rounded-sm shadow-sm">
+        <h1>Administration</h1>
+    </div>
+</div>
+<div>
+    <div class="bg-gray-50 shadow-lg border border-sm">
+        <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
+            <h1>User List</h1>
+        </div>
+        <div class="grid grid-cols-4 p-2 text-lg font-bold">
+            <p>ID</p>
+            <p>Username</p>
+            <p>Email</p>
+            <p>Editor</p>
+        </div>
+        @foreach (IdentityUser u in Model.Users)
+        {
+            <div class="grid grid-cols-4 p-2 bg-white">
+                <p>@u.Id</p>
+                <p>@u.UserName</p>
+                <p>@u.Email</p>
+                <p>Edit</p>
+            </div>
+        }
+        <div class="w-full text-center">
+            <a asp-page="Create" class="bg-gray-50 text-lg text-green-600 block w-full hover:bg-white hover:text-green-700">Create</a>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public class ListModel: AdminPageModel
+    {
+        // Field Entities
+        public UserManager<IdentityUser> UserManager;
+        public IEnumerable<IdentityUser> Users {get; set;}
+
+        // Constructors
+        public ListModel(UserManager<IdentityUser> userManager)
+        {
+            UserManager = userManager;
+        }
+        
+
+        // Methods
+        public void OnGet()
+        {
+            Users = UserManager.Users;
+        }
+
+    }
+}
