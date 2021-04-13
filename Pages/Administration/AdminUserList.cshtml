@@ -12,7 +12,7 @@
             <h1>User List</h1>
         </div>
         <div class="grid grid-cols-4 p-2 text-lg font-bold">
-            <p class="text-right">ID</p>
+            <p>ID</p>
             <p class="text-right">Username</p>
             <p class="text-right">Email</p>
             <p class="text-right">Editor</p>
@@ -20,10 +20,13 @@
         @foreach (IdentityUser u in Model.Users)
         {
             <div class="grid grid-cols-4 p-2 bg-white">
-                <p class="text-right">@u.Id</p>
+                <p class="">@u.Id</p>
                 <p class="text-right">@u.UserName</p>
                 <p class="text-right">@u.Email</p>
-                <p class="text-right">Edit</p>
+                <div class="text-right">
+                    <a asp-page="AdminEditUser" asp-route-id="@u.Id" asp-route-mode="edit" class="text-center bg-gray-50 px-2 py-1 text-yellow-700 hover:bg-gray-100 hover:text-yellow-500 rounded-sm">Edit</a>
+                </div>
+                
             </div>
         }
         <div class="w-full text-center">
