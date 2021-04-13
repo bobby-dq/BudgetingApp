@@ -1,5 +1,5 @@
 @page "{id}"
-@model AdminDeleteUserModel
+@model AdminViewUserModel
 
 <div>
     <div class="p-2 text-center text-2xl font-bold my-2 bg-gray-100 rounded-sm shadow-sm">
@@ -9,7 +9,7 @@
 <div>
     <div class="bg-gray-50 shadow-lg border border-sm">
         <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
-            <h1>Delete User</h1>
+            <h1>User Details</h1>
         </div>
         <div class="p-2">
             <form method="post">
@@ -44,19 +44,18 @@
                         <input disabled type="hidden" name="Password" value="@Model.Password" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
                     </div>
                 </div>
-                <div class="bg-red-200 hover:bg-red-300  p-2 -m-2 mt-2 rounded-b-sm">
-                    <button type="submit" class="w-full font-bold">Delete User</button>
-                </div>
             </form>
         </div>
     </div>
     <div class="mt-5 bg-gray-200 border border-gray-300 rounded-lg shadow-lg  mb-10 flex justify-between">
         <a asp-page="AdminUserList" class="text-center w-full p-2 hover:bg-gray-300">Back To User List</a>
+        <a asp-page="AdminEditUser" asp-route-id="@Model.Id" asp-route-mode="edit" class="text-center w-full p-2 bg-yellow-200 hover:bg-yellow-300">Edit User</a>
+        <a asp-page="AdminDeleteUser" asp-route-id="@Model.Id" class="text-center w-full p-2 bg-red-200 hover:bg-red-300">Delete User</a>
     </div>
 </div>
 
 @functions {
-    public class AdminDeleteUserModel: AdminPageModel
+    public class AdminViewUserModel: AdminPageModel
     {
         // Field Entities
         public UserManager<IdentityUser> UserManager;
@@ -83,7 +82,7 @@
 
 
         // Constructor
-        public AdminDeleteUserModel (UserManager<IdentityUser> userManager)
+        public AdminViewUserModel (UserManager<IdentityUser> userManager)
         {
             UserManager = userManager;
         }
@@ -96,16 +95,5 @@
             UserName = user.UserName;
             Email = user.Email;
         }
-        public async Task<IActionResult> OnPostAsync()
-        {
-        
-            IdentityUser user = await UserManager.FindByIdAsync(Id);
-            if (user != null)
-            {
-                await UserManager.DeleteAsync(user);
-            }
-            return RedirectToPage("AdminUserList");
-        }
-
     }
 }
