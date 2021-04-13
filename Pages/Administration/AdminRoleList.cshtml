@@ -1,0 +1,49 @@
+@page
+@model AdminRoleListModel
+
+<div>
+    <div class="p-2 text-center text-2xl font-bold my-2 bg-gray-100 rounded-sm shadow-sm">
+        <h1>Administration</h1>
+    </div>
+</div>
+<div>
+    <div class="bg-gray-50 shadow-lg border border-sm">
+        <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
+            <h1>Role List</h1>
+        </div>
+
+        <table class="border-separate table-auto w-full whitespace-no-wrap">
+            <thead>
+                <th>Role</th>
+                <th>Members</th>
+            </thead>
+            <tbody class="bg-white text-center">
+                @if (Model.Users.Count() == 0)
+                {
+                    <td colspans="3" class="text-center">No Users</td>
+                }
+                else
+                {
+                    @foreach (IdentityUser u in Model.Users)
+                    {
+                        <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
+                        <td class="">@u.Id</td>
+                        <td class="">@u.Email</td>                
+                    }
+                }
+                
+            </tbody>
+        </table>
+        <div class="w-full text-center">
+            <a asp-page="AdminCreateUser" class="p-3 font-bold bg-gray-50 text-lg text-green-600 block w-full hover:bg-white hover:text-green-700">Create</a>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public class ListModel: AdminPageModel
+    {
+        public UserManager<IdentityUser> UserManager;
+        public RoleManager<IdentityRole> RoleManager;
+    }
+}
