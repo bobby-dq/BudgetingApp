@@ -1,5 +1,5 @@
 @page
-@model ListModel
+@model AdminUserListModel
 
 <div>
     <div class="p-2 text-center text-2xl font-bold my-2 bg-gray-100 rounded-sm shadow-sm">
@@ -12,35 +12,35 @@
             <h1>User List</h1>
         </div>
         <div class="grid grid-cols-4 p-2 text-lg font-bold">
-            <p>ID</p>
-            <p>Username</p>
-            <p>Email</p>
-            <p>Editor</p>
+            <p class="text-right">ID</p>
+            <p class="text-right">Username</p>
+            <p class="text-right">Email</p>
+            <p class="text-right">Editor</p>
         </div>
         @foreach (IdentityUser u in Model.Users)
         {
             <div class="grid grid-cols-4 p-2 bg-white">
-                <p>@u.Id</p>
-                <p>@u.UserName</p>
-                <p>@u.Email</p>
-                <p>Edit</p>
+                <p class="text-right">@u.Id</p>
+                <p class="text-right">@u.UserName</p>
+                <p class="text-right">@u.Email</p>
+                <p class="text-right">Edit</p>
             </div>
         }
         <div class="w-full text-center">
-            <a asp-page="Create" class="bg-gray-50 text-lg text-green-600 block w-full hover:bg-white hover:text-green-700">Create</a>
+            <a asp-page="AdminCreateUser" class="bg-gray-50 text-lg text-green-600 block w-full hover:bg-white hover:text-green-700">Create</a>
         </div>
     </div>
 </div>
 
 @functions {
-    public class ListModel: AdminPageModel
+    public class AdminUserListModel: AdminPageModel
     {
         // Field Entities
         public UserManager<IdentityUser> UserManager;
         public IEnumerable<IdentityUser> Users {get; set;}
 
         // Constructors
-        public ListModel(UserManager<IdentityUser> userManager)
+        public AdminUserListModel(UserManager<IdentityUser> userManager)
         {
             UserManager = userManager;
         }

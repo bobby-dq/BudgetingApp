@@ -1,0 +1,106 @@
+@page
+@model AdminCreateUserModel
+
+<div>
+    <div class="p-2 text-center text-2xl font-bold my-2 bg-gray-100 rounded-sm shadow-sm">
+        <h1>Administration</h1>
+    </div>
+</div>
+<div>
+    <div class="bg-gray-50 shadow-lg border border-sm">
+        <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
+            <h1>Create User</h1>
+        </div>
+        <div class="p-2">
+            <form method="post">
+                <div asp-validation-summary="All" class="text-red-500"></div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="UserName"></label>
+                    </div>
+                    <div>
+                        <input name="UserName" value="@Model.UserName" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="Email"></label>
+                    </div>
+                    <div>
+                        <input type="email" name="Email" value="@Model.Email" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="Password"></label>
+                    </div>
+                    <div>
+                        <input type="password" name="Password" value="@Model.Password" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                </div>
+                <div class="bg-green-200 hover:bg-green-300  p-2 -m-2 mt-2 rounded-b-sm">
+                    <button type="submit" class="w-full font-bold">Create User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mt-5 bg-gray-200 border border-gray-300 rounded-lg shadow-lg  mb-10 flex justify-between">
+            <a asp-page="AdminUserList" class="text-center w-full p-2 hover:bg-gray-300">Back To User List</a>
+    </div>
+</div>
+
+@functions {
+    public class AdminCreateUserModel: AdminPageModel
+    {
+        // Field Entities
+        public UserManager<IdentityUser> UserManager;
+
+
+        [BindProperty]
+        [Required]
+        [Display(Name="User Name")]
+        public string UserName {get; set;}
+
+
+        [BindProperty]
+        [Required]
+        public string Email {get; set;}
+
+
+        [BindProperty]
+        [Required]
+        public string Password {get; set;}
+
+
+        // Constructor
+        public AdminCreateUserModel (UserManager<IdentityUser> userManager)
+        {
+            UserManager = userManager;
+        }
+
+        // Methods
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityUser user = new IdentityUser
+                {
+                    UserName = UserName,
+                    Email = Email
+                };
+                IdentityResult result = await UserManager.CreateAsync(user, Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToPage("AdminUserList");
+                }
+                foreach (IdentityError err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
+            }
+
+            return Page();
+        }
+
+    }
+}
