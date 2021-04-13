@@ -35,6 +35,16 @@ namespace BudgetingApp
             
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>();
+
+            services.Configure<IdentityOptions>(opts =>{
+                opts.Password.RequireDigit = true;
+                opts.Password.RequireLowercase = true;
+                opts.Password.RequireNonAlphanumeric = true;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequiredLength = 6;
+                opts.User.RequireUniqueEmail = true;
+                opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+            });
             
 
             services.AddLiveReload(config => {});
