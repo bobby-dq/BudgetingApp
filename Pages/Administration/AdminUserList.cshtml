@@ -27,9 +27,12 @@
                 {
                     @foreach (IdentityUser u in Model.Users)
                     {
-                        <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
-                        <td class="">@u.Id</td>
-                        <td class="">@u.Email</td>                
+                        <tr>
+                            <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
+                            <td class="">@u.Id</td>
+                            <td class="">@u.Email</td>
+                        </tr>
+                                        
                     }
                 }
                 
@@ -38,6 +41,10 @@
         <div class="w-full text-center">
             <a asp-page="AdminCreateUser" class="p-3 font-bold bg-gray-50 text-lg text-green-600 block w-full hover:bg-white hover:text-green-700">Create</a>
         </div>
+    </div>
+
+    <div class="my-10">
+        <a asp-page="AdminRoleList" class="p-3 font-bold bg-gray-50 text-lg py-1 px-3 hover:bg-gray-100 hover:text-gray-900 border border-indigo-50">See Roles</a>
     </div>
 </div>
 

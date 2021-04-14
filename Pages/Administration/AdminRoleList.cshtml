@@ -14,20 +14,23 @@
 
         <table class="border-separate table-auto w-full whitespace-no-wrap">
             <thead>
-                <th>Role</th>
-                <th>Members</th>
+                <th colspan="2">Role</th>
+                <th colspan="2">Members</th>
             </thead>
             <tbody class="bg-white text-center">
                 @if (Model.Roles.Count() == 0)
                 {
-                    <td colspans="4" class="text-center">No Role</td>
+                    <td colspan="4" class="text-center">No Roles</td>
                 }
                 else
                 {
                     @foreach (IdentityRole r in Model.Roles)
                     {
-                        <td colspan="1"><a asp-page="AdminViewRole" asp-route-id="@r.Id" class="underline hover:bg-gray-50 w-full block">@r.Name</a></td>
-                        <td colspan="3">@(await Model.GetMembersString(r.Name))</td>    
+                        <tr>
+                            <td colspan="1"><a asp-page="AdminEditRole" asp-route-id="@r.Id" class="underline hover:bg-gray-50 w-full block">@r.Name</a></td>
+                            <td colspan="3">@(await Model.GetMembersString(r.Name))</td>   
+                        </tr>
+                         
                     }
                 }
             </tbody>
@@ -35,6 +38,10 @@
         <div class="w-full text-center">
             <a asp-page="AdminCreateRole" class="p-3 font-bold bg-gray-50 text-lg text-green-600 block w-full hover:bg-white hover:text-green-700">Create Role</a>
         </div>
+    </div>
+
+    <div class="my-10">
+        <a asp-page="AdminUserList" class="p-3 font-bold bg-gray-50 text-lg py-1 px-3 hover:bg-gray-100 hover:text-gray-900 border border-indigo-50">See Users</a>
     </div>
 </div>
 

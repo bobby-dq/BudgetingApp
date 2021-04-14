@@ -34,9 +34,12 @@
                             {
                                 @foreach (IdentityUser u in await Model.Members())
                                 {
-                                    <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
-                                    <td class="">@u.Email</td>
-                                    <td></td>                
+                                    <tr>
+                                        <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
+                                        <td class="">@u.Email</td>
+                                        <td></td>  
+                                    </tr>
+                                                  
                                 }
                             }
                         </tbody>
@@ -59,16 +62,20 @@
                             {
                                 @foreach (IdentityUser u in await Model.NonMembers())
                                 {
-                                    <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
-                                    <td class="">@u.Email</td>
-                                    <td></td>                
+                                    <tr>
+                                        <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
+                                        <td class="">@u.Email</td>
+                                        <td></td> 
+                                    </tr>
+                                                   
                                 }
                             }
                         </tbody>
                     </table>
                 </div>
-                <div class="bg-green-200 hover:bg-green-300  p-2 -m-2 mt-2 rounded-b-sm">
+                <div class="bg-red-200 hover:bg-red-300 p-2 rounded-b-sm">
                     <button type="submit" class="w-full font-bold">Delete @Model.Role.Name</button>
+                </div>
             </form>
         </div>
     </div>
@@ -99,9 +106,10 @@
             Role = await RoleManager.FindByIdAsync(id);
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string id)
         {
-            await RoleManager.DeleteAsync(Role);
+            IdentityRole role = await RoleManager.FindByIdAsync(id);
+            await RoleManager.DeleteAsync(role);
             return RedirectToPage("AdminRoleList");
         }
     }

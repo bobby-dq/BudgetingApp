@@ -34,9 +34,12 @@
                             {
                                 @foreach (IdentityUser u in await Model.Members())
                                 {
-                                    <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
-                                    <td class="">@u.Email</td>
-                                    <td><button asp-route-userid="@u.Id" type="submit" class="">Change</button></td>                
+                                    <tr>
+                                        <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
+                                        <td class="">@u.Email</td>
+                                        <td><div class="bg-green-200 hover:bg-green-300  p-2"><button asp-route-userid="@u.Id" type="submit" class="">Change</button></div></td>     
+                                    </tr>
+                                                
                                 }
                             }
                         </tbody>
@@ -59,9 +62,11 @@
                             {
                                 @foreach (IdentityUser u in await Model.NonMembers())
                                 {
-                                    <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
-                                    <td class="">@u.Email</td>
-                                    <td><button asp-route-userid="@u.Id" type="submit" class="">Change</button></td>                
+                                    <tr>
+                                        <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
+                                        <td class="">@u.Email</td>
+                                        <td><div class="bg-green-200 hover:bg-green-300 p-2 "><button asp-route-userid="@u.Id" type="submit" class="">Change</button></div></td>  
+                                    </tr>                 
                                 }
                             }
                         </tbody>
