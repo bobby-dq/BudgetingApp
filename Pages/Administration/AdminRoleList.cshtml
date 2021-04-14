@@ -18,32 +18,50 @@
                 <th>Members</th>
             </thead>
             <tbody class="bg-white text-center">
-                @if (Model.Users.Count() == 0)
+                @if (Model.Roles.Count() == 0)
                 {
-                    <td colspans="3" class="text-center">No Users</td>
+                    <td colspans="4" class="text-center">No Role</td>
                 }
                 else
                 {
-                    @foreach (IdentityUser u in Model.Users)
+                    @foreach (IdentityRole r in Model.Roles)
                     {
-                        <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
-                        <td class="">@u.Id</td>
-                        <td class="">@u.Email</td>                
+                        <td colspan="1"><a asp-page="AdminViewRole" asp-route-id="@r.Id" class="underline hover:bg-gray-50 w-full block">@r.Name</a></td>
+                        <td colspan="3">@(await Model.GetMembersString(r.Name))</td>    
                     }
                 }
-                
             </tbody>
         </table>
         <div class="w-full text-center">
-            <a asp-page="AdminCreateUser" class="p-3 font-bold bg-gray-50 text-lg text-green-600 block w-full hover:bg-white hover:text-green-700">Create</a>
+            <a asp-page="AdminCreateRole" class="p-3 font-bold bg-gray-50 text-lg text-green-600 block w-full hover:bg-white hover:text-green-700">Create Role</a>
         </div>
     </div>
 </div>
 
 @functions {
-    public class ListModel: AdminPageModel
+    public class AdminRoleListModel: AdminPageModel
     {
         public UserManager<IdentityUser> UserManager;
         public RoleManager<IdentityRole> RoleManager;
+        public IEnumerable<IdentityRole> Roles {get; set;}
+        
+        public AdminRoleListModel (UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            UserManager = userManager;
+            RoleManager = roleManager;
+        }
+
+        public void OnGet()
+        {
+            Roles = RoleManager.Roles;
+        }
+
+        public async Task<string> GetMembersString(string role)
+        {
+            IEnumerable<IdentityUser> users = await UserManager.GetUsersInRoleAsync(role);
+            string result = users.Count() == 0 ? "No Members" : string.Join(", ", users.Take(3).Select(u => u.UserName).ToArray());
+            return users.Count() > 3 ? $"{result}, plus others": result;
+
+        }
     }
 }
