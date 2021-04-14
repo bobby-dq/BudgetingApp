@@ -1,5 +1,5 @@
 @page "{id}"
-@model AdminEditRoleModel
+@model AdminDeleteRoleModel
 
 <div>
     <div class="p-2 text-center text-2xl font-bold my-2 bg-gray-100 rounded-sm shadow-sm">
@@ -9,7 +9,7 @@
 <div>
     <div class="bg-gray-50 shadow-lg border border-sm">
         <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
-            <h1>Edit Role: @Model.Role.Name</h1>
+            <h1>Delete Role: @Model.Role.Name</h1>
         </div>
         <div class="p-2">
             <form method="post">
@@ -36,7 +36,7 @@
                                 {
                                     <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
                                     <td class="">@u.Email</td>
-                                    <td><button asp-route-userid="@u.Id" type="submit" class="">Change</button></td>                
+                                    <td></td>                
                                 }
                             }
                         </tbody>
@@ -61,30 +61,32 @@
                                 {
                                     <td><a asp-page="AdminViewUser" asp-route-id="@u.Id" class="underline hover:bg-gray-50 w-full block">@u.UserName</a></td>
                                     <td class="">@u.Email</td>
-                                    <td><button asp-route-userid="@u.Id" type="submit" class="">Change</button></td>                
+                                    <td></td>                
                                 }
                             }
                         </tbody>
                     </table>
                 </div>
+                <div class="bg-green-200 hover:bg-green-300  p-2 -m-2 mt-2 rounded-b-sm">
+                    <button type="submit" class="w-full font-bold">Delete @Model.Role.Name</button>
             </form>
         </div>
     </div>
     <div class="mt-5 bg-gray-200 border border-gray-300 rounded-lg shadow-lg  mb-10 flex justify-between">
-        <a asp-page="AdminDeleteRole" asp-route-id="@Model.Role.Id" class="text-center w-full p-2 bg-red-300 hover:bg-red-400">Delete @Model.Role.Name</a>
+        <a asp-page="AdminEditRole" asp-route-id="@Model.Role.Id" class="text-center w-full p-2 bg-yellow-300 hover:bg-yellow-400">Edit @Model.Role.Name</a>
         <a asp-page="AdminRoleList" class="text-center w-full p-2 hover:bg-gray-300">Back To Role List</a>
     </div>
 </div>
 
 
 @functions {
-    public class AdminEditRoleModel: AdminPageModel
+    public class AdminDeleteRoleModel: AdminPageModel
     {
         public UserManager<IdentityUser> UserManager;
         public RoleManager<IdentityRole> RoleManager;
         public IdentityRole Role {get; set;}
 
-        public AdminEditRoleModel (UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AdminDeleteRoleModel (UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             UserManager = userManager;
             RoleManager = roleManager;
@@ -97,32 +99,10 @@
             Role = await RoleManager.FindByIdAsync(id);
         }
 
-        public async Task<IActionResult> OnPostAsync(string userid, string roleName)
+        public async Task<IActionResult> OnPostAsync()
         {
-            Role = await RoleManager.FindByNameAsync(roleName);
-            IdentityUser user = await UserManager.FindByIdAsync(userid);
-            IdentityResult result;
-            if (await UserManager.IsInRoleAsync(user, roleName))
-            {
-                result = await UserManager.RemoveFromRoleAsync(user, roleName);
-            }
-            else
-            {
-                result = await UserManager.AddToRoleAsync(user, roleName);
-            }
-            if (result.Succeeded)
-            {
-                return RedirectToPage();
-            }
-            else
-            {
-                foreach (IdentityError err in result.Errors)
-                {
-                    ModelState.AddModelError("", err.Description);
-                }
-                return Page();
-            }
+            await RoleManager.DeleteAsync(Role);
+            return RedirectToPage("AdminRoleList");
         }
-        
     }
 }
