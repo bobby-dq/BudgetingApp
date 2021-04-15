@@ -1,0 +1,101 @@
+@page "{id}"
+@model DeleteUserModel
+
+<div>
+    <div class="bg-gray-50 shadow-lg border border-sm">
+        <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
+            <h1>Delete Profile</h1>
+        </div>
+        <div class="p-2">
+            <form method="post">
+                <div asp-validation-summary="All" class="text-red-500"></div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="Id"></label>
+                    </div>
+                    <div>
+                        <input disabled name="Id" value="@Model.Id" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                        <input name="Id" type="hidden" value="@Model.Id" />
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="UserName"></label>
+                    </div>
+                    <div>
+                        <input disabled name="UserName" value="@Model.UserName" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="Email"></label>
+                    </div>
+                    <div>
+                        <input disabled type="email" name="Email" value="@Model.Email" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                </div>
+                <div class="bg-red-200 hover:bg-red-300  p-2 -m-2 mt-2 rounded-b-sm">
+                    <button type="submit" class="w-full font-bold">Delete Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mt-5 bg-gray-200 border border-gray-300 rounded-lg shadow-lg  mb-10 flex justify-between">
+        <a asp-page="userDetails" class="text-center w-full p-2 hover:bg-gray-100">Back</a>
+    </div>
+</div>
+
+@functions {
+    public class DeleteUserModel: UserPageModel
+    {
+        // Field Entities
+        public UserManager<IdentityUser> UserManager;
+
+        [BindProperty]
+        [Required]
+        public string Id {get; set;}
+
+        [BindProperty]
+        [Required]
+        [Display(Name="User Name")]
+        public string UserName {get; set;}
+
+
+        [BindProperty]
+        [Required]
+        [EmailAddress]
+        public string Email {get; set;}
+
+
+        [BindProperty]
+        [Display(Name="New Password")]
+        public string Password {get; set;}
+
+
+        // Constructor
+        public DeleteUserModel (UserManager<IdentityUser> userManager)
+        {
+            UserManager = userManager;
+        }
+
+        // Methods
+        public async Task OnGetAsync(string id)
+        {
+            IdentityUser user = await UserManager.FindByIdAsync(id);
+            Id = user.Id;
+            UserName = user.UserName;
+            Email = user.Email;
+        }
+        public async Task<IActionResult> OnPostAsync()
+        {
+        
+            IdentityUser user = await UserManager.FindByIdAsync(Id);
+            if (user != null)
+            {
+                await UserManager.DeleteAsync(user);
+            }
+            return RedirectToPage("AdminUserList");
+        }
+
+    }
+}

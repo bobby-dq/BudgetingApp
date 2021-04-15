@@ -1,0 +1,27 @@
+@page
+@model LogoutModel
+
+<div>
+    <div>
+        <h1>You are logged out.</h1>
+    </div>
+    <div>
+        <a asp-page="Login">Login</a>
+    </div>
+</div>
+
+@functions {
+    public class LogoutModel: UserPageModel
+    {
+        private SignInManager<IdentityUser> signInManager;
+        public LogoutModel(SignInManager<IdentityUser> signInMgr)
+        {
+            signInManager = signInMgr;
+        }
+
+        public async Task OnGetAsync()
+        {
+            await signInManager.SignOutAsync();
+        }
+    }
+}

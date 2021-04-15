@@ -1,0 +1,99 @@
+@page
+@model RegisterModel
+
+<div>
+    <div class="bg-gray-50 shadow-lg border border-sm">
+        <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
+            <h1>Register</h1>
+        </div>
+        <div class="p-2">
+            <form method="post">
+                <div asp-validation-summary="All" class="text-red-500"></div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="UserName"></label>
+                    </div>
+                    <div>
+                        <input name="UserName" value="@Model.UserName" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="Email"></label>
+                    </div>
+                    <div>
+                        <input type="email" name="Email" value="@Model.Email" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div>
+                        <label asp-for="Password"></label>
+                    </div>
+                    <div>
+                        <input type="password" name="Password" value="@Model.Password" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                </div>
+                <div class="bg-green-200 hover:bg-green-300  p-2 -m-2 mt-2 rounded-b-sm">
+                    <button type="submit" class="w-full font-bold">Create Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public class RegisterModel: PageModel
+    {
+        // Field Entities
+        public UserManager<IdentityUser> UserManager;
+
+
+        [BindProperty]
+        [Required]
+        [Display(Name="User Name")]
+        public string UserName {get; set;}
+
+
+        [BindProperty]
+        [Required]
+        [EmailAddress]
+        public string Email {get; set;}
+
+
+        [BindProperty]
+        [Required]
+        public string Password {get; set;}
+
+
+        // Constructor
+        public RegisterModel (UserManager<IdentityUser> userManager)
+        {
+            UserManager = userManager;
+        }
+
+        // Methods
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityUser user = new IdentityUser
+                {
+                    UserName = UserName,
+                    Email = Email
+                };
+                IdentityResult result = await UserManager.CreateAsync(user, Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToPage("AdminUserList");
+                }
+                foreach (IdentityError err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
+            }
+
+            return Page();
+        }
+
+    }
+}
