@@ -1,16 +1,26 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 using BudgetingApp.Models.BudgetingModels;
 
 namespace BudgetingApp.Models.RepositoryModels
 {
     public static class BudgetingSeedData
     {
-        public static void SeedBudgetingDatabase (BudgetingContext context) 
+        public static void SeedBudgetingDatabase(BudgetingContext context, IServiceProvider serviceProvider)
         {
+            serviceProvider = serviceProvider.CreateScope().ServiceProvider;
+            UserManager<IdentityUser> userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            SeedBudgetingDatabaseAsync(context, userManager).Wait();
+        }
+        public static async Task SeedBudgetingDatabaseAsync (BudgetingContext context, UserManager<IdentityUser> userManager) 
+        {
+            IdentityUser user = await userManager.FindByNameAsync("BobbyDq");
+            string userId = user.Id;
+
             context.Database.Migrate();
             if (context.Budgets.Count() == 0 && context.ExpenseCategories.Count() == 0 &&
                 context.ExpenseItems.Count() == 0 && context.IncomeCategories.Count() == 0 &&
@@ -20,12 +30,14 @@ namespace BudgetingApp.Models.RepositoryModels
                 // Create Budgets
                 Budget budgetA = new Budget 
                 {
+                    UserId = userId,
                     Description = "Budget A",
                     StartDate = new DateTime(2021, 01, 01),
                     EndDate = new DateTime(2021, 01, 31)
                 };
                 Budget budgetB = new Budget 
                 {
+                    UserId = userId,
                     Description = "Budget B",
                     StartDate = new DateTime(2021, 03, 01),
                     EndDate = new DateTime(2021, 03, 31)
@@ -34,6 +46,7 @@ namespace BudgetingApp.Models.RepositoryModels
                 // Create Expense Categories
                 ExpenseCategory expenseCategoryAA = new ExpenseCategory 
                 {
+                    UserId = userId,
                     Description = "Expense Category AA",
                     BudgetedAmount = 100, 
                     ExpectedDate = new DateTime(2021, 01, 30),
@@ -41,6 +54,7 @@ namespace BudgetingApp.Models.RepositoryModels
                 };
                 ExpenseCategory expenseCategoryAB = new ExpenseCategory 
                 {
+                    UserId = userId,
                     Description = "Expense Category AB",
                     BudgetedAmount = 200, 
                     ExpectedDate = new DateTime(2021, 04, 30),
@@ -48,6 +62,7 @@ namespace BudgetingApp.Models.RepositoryModels
                 };
                 ExpenseCategory expenseCategoryBA = new ExpenseCategory 
                 {
+                    UserId = userId,
                     Description = "Expense Category BA",
                     BudgetedAmount = 222, 
                     ExpectedDate = new DateTime(2021, 01, 30),
@@ -55,6 +70,7 @@ namespace BudgetingApp.Models.RepositoryModels
                 };
                 ExpenseCategory expenseCategoryBB = new ExpenseCategory 
                 {
+                    UserId = userId,
                     Description = "Expense Category BB",
                     BudgetedAmount = 333, 
                     ExpectedDate = new DateTime(2021, 04, 30),
@@ -64,6 +80,7 @@ namespace BudgetingApp.Models.RepositoryModels
                 // Create Income Categories
                 IncomeCategory incomeCategoryAA = new IncomeCategory
                 {
+                    UserId = userId,
                     Description = "Income Category AA",
                     BudgetedAmount = 1000, 
                     ExpectedDate = new DateTime(2021, 01, 30),
@@ -71,21 +88,24 @@ namespace BudgetingApp.Models.RepositoryModels
                 };
                 IncomeCategory incomeCategoryAB = new IncomeCategory
                 {
-                    Description = "Expense Category AB",
+                    UserId = userId,
+                    Description = "Income Category AB",
                     BudgetedAmount = 2000, 
                     ExpectedDate = new DateTime(2021, 04, 30),
                     Budget = budgetA
                 };
                 IncomeCategory incomeCategoryBA = new IncomeCategory
                 {
-                    Description = "Expense Category BA",
+                    UserId = userId,
+                    Description = "Income Category BA",
                     BudgetedAmount = 2222, 
                     ExpectedDate = new DateTime(2021, 01, 30),
                     Budget = budgetB
                 };
                 IncomeCategory incomeCategoryBB = new IncomeCategory
                 {
-                    Description = "Expense Category BB",
+                    UserId = userId,
+                    Description = "Income Category BB",
                     BudgetedAmount = 3333, 
                     ExpectedDate = new DateTime(2021, 04, 30),
                     Budget = budgetB
@@ -94,6 +114,7 @@ namespace BudgetingApp.Models.RepositoryModels
                 // Create Expense Items
                 context.ExpenseItems.AddRange(
                     new ExpenseItem {
+                        UserId = userId,
                         Description = "Expense Item AAA",
                         Amount = 12.89m,
                         TransactionDate = new DateTime(2021, 05, 09),
@@ -101,6 +122,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetA
                     },
                     new ExpenseItem {
+                        UserId = userId,
                         Description = "Expense Item AAB",
                         Amount = 16.75m,
                         TransactionDate = new DateTime(2021, 05, 10),
@@ -108,6 +130,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetA
                     },
                     new ExpenseItem {
+                        UserId = userId,
                         Description = "Expense Item ABA",
                         Amount = 500.76m,
                         TransactionDate = new DateTime(2021, 05, 11),
@@ -115,6 +138,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetA
                     },
                     new ExpenseItem {
+                        UserId = userId,
                         Description = "Expense Item ABB",
                         Amount = 122.32m,
                         TransactionDate = new DateTime(202, 05, 12),
@@ -122,6 +146,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetA
                     },
                     new ExpenseItem {
+                        UserId = userId,
                         Description = "Expense Item BAA",
                         Amount = 12.89m,
                         TransactionDate = new DateTime(2021, 05, 09),
@@ -129,6 +154,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetB
                     },
                     new ExpenseItem {
+                        UserId = userId,
                         Description = "Expense Item BAB",
                         Amount = 26.75m,
                         TransactionDate = new DateTime(2021, 05, 16),
@@ -136,6 +162,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetB
                     },
                     new ExpenseItem {
+                        UserId = userId,
                         Description = "Expense Item BBA",
                         Amount = 300.76m,
                         TransactionDate = new DateTime(2021, 05, 17),
@@ -143,6 +170,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetB
                     },
                     new ExpenseItem {
+                        UserId = userId,
                         Description = "Expense Item BBB",
                         Amount = 422.32m,
                         TransactionDate = new DateTime(2021, 05, 18),
@@ -154,6 +182,7 @@ namespace BudgetingApp.Models.RepositoryModels
                 // Create Income Items
                 context.IncomeItems.AddRange(
                     new IncomeItem {
+                        UserId = userId,
                         Description = "Income Item AAA",
                         Amount = 140.89m,
                         TransactionDate = new DateTime(2021, 05, 09),
@@ -161,6 +190,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetA
                     },
                     new IncomeItem {
+                        UserId = userId,
                         Description = "Income Item AAB",
                         Amount = 160.75m,
                         TransactionDate = new DateTime(2021, 06, 10),
@@ -168,6 +198,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetA
                     },
                     new IncomeItem {
+                        UserId = userId,
                         Description = "Income Item ABA",
                         Amount = 5001.76m,
                         TransactionDate = new DateTime(2021, 07, 11),
@@ -175,6 +206,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetA
                     },
                     new IncomeItem {
+                        UserId = userId,
                         Description = "Income Item ABB",
                         Amount = 1224.32m,
                         TransactionDate = new DateTime(202, 08, 12),
@@ -182,6 +214,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetA
                     },
                     new IncomeItem {
+                        UserId = userId,
                         Description = "Income Item BAA",
                         Amount = 129.89m,
                         TransactionDate = new DateTime(2021, 09, 09),
@@ -196,6 +229,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetB
                     },
                     new IncomeItem {
+                        UserId = userId,
                         Description = "Income Item BBA",
                         Amount = 00.76m,
                         TransactionDate = new DateTime(2021, 11, 17),
@@ -203,6 +237,7 @@ namespace BudgetingApp.Models.RepositoryModels
                         Budget = budgetB
                     },
                     new IncomeItem {
+                        UserId = userId,
                         Description = "Income Item BBB",
                         Amount = 3224.32m,
                         TransactionDate = new DateTime(2021, 12, 18),

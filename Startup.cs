@@ -75,7 +75,8 @@ namespace BudgetingApp
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            BudgetingSeedData.SeedBudgetingDatabase(context);
+            
+            BudgetingSeedData.SeedBudgetingDatabase(context, app.ApplicationServices);
         }
     }
 }
