@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using BudgetingApp.Models.RepositoryModels;
 using BudgetingApp.Models.BudgetingModels;
 using BudgetingApp.Models.ViewModels;
@@ -15,11 +16,14 @@ namespace BudgetingApp.Controllers
     public class BudgetController: Controller
     {
         private BudgetingContext context;
+        private UserManager<IdentityUser> userManager;
         private DateTime GetFirstDayOfMonth() => new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         private DateTime GetLastDayOfMonth() => GetFirstDayOfMonth().AddMonths(1).AddDays(-1);
-        private String GetCurrentMonthAndYear() => GetFirstDayOfMonth().ToString("MMMM yyyy");
-        public BudgetController (BudgetingContext ctx)
+        private string GetCurrentMonthAndYear() => GetFirstDayOfMonth().ToString("MMMM yyyy");
+        private string GetUserId() => userManager.GetUserId(User);
+        public BudgetController (BudgetingContext ctx, UserManager<IdentityUser> userMgr)
         {
+            userManager = userMgr;
             context = ctx;
         }
 
@@ -99,7 +103,7 @@ namespace BudgetingApp.Controllers
             {
                 Description = $"{GetCurrentMonthAndYear()} Budget",
                 StartDate = GetFirstDayOfMonth(),
-                EndDate = GetLastDayOfMonth(),
+                EndDate = GetLastDayOfMonth()
             };
             return View("BudgetEditor", BudgetFactory.Create(budget));
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using BudgetingApp.Models.RepositoryModels;
 using BudgetingApp.Models.BudgetingModels;
 using BudgetingApp.Models.ViewModels;
@@ -15,9 +16,12 @@ namespace BudgetingApp.Controllers
     public class ExpenseCategoryController: Controller
     {
         private BudgetingContext context;
-        public ExpenseCategoryController (BudgetingContext ctx)
+        private UserManager<IdentityUser> userManager;
+        private string GetUserId() => userManager.GetUserId(User);
+        public ExpenseCategoryController (BudgetingContext ctx, UserManager<IdentityUser> userMgr)
         {
             context = ctx;
+            userManager = userMgr;
         }
 
         // HTTP Get Request
