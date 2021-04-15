@@ -75,7 +75,7 @@ namespace BudgetingApp
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            
+            IdentitySeedData.CreateAdminAccount(app.ApplicationServices, Configuration);
             BudgetingSeedData.SeedBudgetingDatabase(context, app.ApplicationServices);
         }
     }

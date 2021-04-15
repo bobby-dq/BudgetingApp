@@ -8,7 +8,10 @@ namespace BudgetingApp.Models.RepositoryModels
 {
     public class IdentitySeedData
     {
-        //public static void CreateAdminAccount(IServiceProvider serviceProvider, )
+        public static void CreateAdminAccount(IServiceProvider serviceProvider, IConfiguration configuration)
+        {
+            CreateAdminAccountAsync(serviceProvider, configuration).Wait();
+        }
 
         public static async Task CreateAdminAccountAsync (IServiceProvider serviceProvider, IConfiguration configuration)
         {
