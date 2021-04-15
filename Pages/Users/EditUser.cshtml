@@ -14,7 +14,7 @@
                         <label asp-for="Id"></label>
                     </div>
                     <div>
-                        <input disabled name="Id" value="@Model.Id" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                        <input name="Id" value="@Model.Id" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
                         <input name="Id" type="hidden" value="@Model.Id" />
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                         <label asp-for="UserName"></label>
                     </div>
                     <div>
-                        <input disabled name="UserName" value="@Model.UserName" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                        <input name="UserName" value="@Model.UserName" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
                     </div>
                 </div>
                 <div class="mb-5">
@@ -31,7 +31,7 @@
                         <label asp-for="Email"></label>
                     </div>
                     <div>
-                        <input disabled type="email" name="Email" value="@Model.Email" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
+                        <input type="email" name="Email" value="@Model.Email" class="text-black rounded-md w-full border border-indigo-100 p-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-200">
                     </div>
                 </div>
                 <div class="mb-5">
