@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using BudgetingApp.Models.RepositoryModels;
 using BudgetingApp.Models.BudgetingModels;
 using BudgetingApp.Models.ViewModels;
@@ -12,6 +13,7 @@ using BudgetingApp.Models.ViewModelFactories;
 
 namespace BudgetingApp.Controllers
 {
+    [Authorize]
     [AutoValidateAntiforgeryToken]
     public class ExpenseItemController:Controller
     {
