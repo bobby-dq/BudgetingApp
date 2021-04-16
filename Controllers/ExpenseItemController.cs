@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using BudgetingApp.Models.RepositoryModels;
 using BudgetingApp.Models.BudgetingModels;
 using BudgetingApp.Models.ViewModels;
@@ -15,8 +16,11 @@ namespace BudgetingApp.Controllers
     public class ExpenseItemController:Controller
     {
         private BudgetingContext context;
-        public ExpenseItemController(BudgetingContext ctx)
+        private UserManager<IdentityUser> userManager;
+        private string GetUserId() => userManager.GetUserId(User);
+        public ExpenseItemController(BudgetingContext ctx, UserManager<IdentityUser> userMgr)
         {
+            userManager = userMgr;
             context = ctx;
         }
 
@@ -38,6 +42,7 @@ namespace BudgetingApp.Controllers
             Budget budget = await context.Budgets.FindAsync(expenseCategory.BudgetId);
             ExpenseItem expenseItem = new ExpenseItem
             {
+                UserId = GetUserId(),
                 ExpenseCategoryId = id,
                 BudgetId = budget.BudgetId,
                 Description = $"{expenseCategory.Description} Transaction Item",

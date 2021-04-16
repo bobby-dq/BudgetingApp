@@ -101,6 +101,7 @@ namespace BudgetingApp.Controllers
         {
             Budget budget = new Budget 
             {
+                UserId = GetUserId(),
                 Description = $"{GetCurrentMonthAndYear()} Budget",
                 StartDate = GetFirstDayOfMonth(),
                 EndDate = GetLastDayOfMonth()

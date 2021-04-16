@@ -64,6 +64,7 @@ namespace BudgetingApp.Controllers
             Budget budget = context.Budgets.Find(id);
             ExpenseCategory expenseCategory = new ExpenseCategory
             {
+                UserId = GetUserId(),
                 BudgetId = id
             };
             
