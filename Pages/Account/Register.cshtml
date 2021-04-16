@@ -1,7 +1,7 @@
 @page
 @model RegisterModel
 
-<div>
+<div class="mt-5">
     <div class="bg-gray-50 shadow-lg border border-sm">
         <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
             <h1>Register</h1>
@@ -84,7 +84,7 @@
                 IdentityResult result = await UserManager.CreateAsync(user, Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToPage("AdminUserList");
+                    return RedirectToPage("Login");
                 }
                 foreach (IdentityError err in result.Errors)
                 {
