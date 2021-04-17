@@ -95,12 +95,12 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create ([FromForm] ExpenseCategory expenseCategory, long id)
         {
-            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == id);
-
-            if (!IsOwner(preSaveBudget.UserId))
+            if (!IsOwner(expenseCategory.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             }
+
+            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == id);
             
             if (ModelState.IsValid)
             {
@@ -133,12 +133,11 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit ([FromForm]ExpenseCategory expenseCategory)
         {
-            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
-
-            if (!IsOwner(preSaveBudget.UserId))
+            if (!IsOwner(expenseCategory.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             }
+            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
 
             if (ModelState.IsValid)
             {
@@ -168,12 +167,12 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete (ExpenseCategory expenseCategory)
         {
-            Budget preDeleteBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
-
-            if (!IsOwner(preDeleteBudget.UserId))
+            if (!IsOwner(expenseCategory.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             }
+
+            Budget preDeleteBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
 
             context.ExpenseCategories.Remove(expenseCategory);
             await context.SaveChangesAsync();
