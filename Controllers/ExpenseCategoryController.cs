@@ -137,6 +137,7 @@ namespace BudgetingApp.Controllers
             {
                 return RedirectToPage("/Error/Error404");
             }
+            
             Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
 
             if (ModelState.IsValid)

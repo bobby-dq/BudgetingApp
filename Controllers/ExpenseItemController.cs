@@ -71,14 +71,14 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] ExpenseItem expenseItem, long id)
         {
-            ExpenseCategory preSaveExpenseCategory = await context.ExpenseCategories
-                .AsNoTracking()
-                .FirstAsync(ec => ec.ExpenseCategoryId == id);
-
-            if (!IsOwner(preSaveExpenseCategory.UserId))
+            if (!IsOwner(expenseItem.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             }
+
+            ExpenseCategory preSaveExpenseCategory = await context.ExpenseCategories
+                .AsNoTracking()
+                .FirstAsync(ec => ec.ExpenseCategoryId == id);
 
             Budget preSaveBudget = await context.Budgets
                 .AsNoTracking()
@@ -118,14 +118,14 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit([FromForm] ExpenseItem expenseItem)
         {
-            ExpenseCategory preSaveExpenseCategory = await context.ExpenseCategories
-                .AsNoTracking()
-                .FirstAsync(ec => ec.ExpenseCategoryId == expenseItem.ExpenseCategoryId);
-
-            if (!IsOwner(preSaveExpenseCategory.UserId))
+            if (!IsOwner(expenseItem.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             }
+
+            ExpenseCategory preSaveExpenseCategory = await context.ExpenseCategories
+                .AsNoTracking()
+                .FirstAsync(ec => ec.ExpenseCategoryId == expenseItem.ExpenseCategoryId);
 
             Budget preSaveBudget = await context.Budgets
                 .AsNoTracking()
@@ -161,11 +161,13 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete (ExpenseItem expenseItem)
         {
+            if (!IsOwner(expenseItem.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
             Budget preDeleteBudget = await context.Budgets
                 .AsNoTracking()
                 .FirstAsync(b => b.BudgetId == expenseItem.BudgetId);
-
-            if (!IsOwner)
 
             ExpenseCategory preDeleteExpenseCategory = await context.ExpenseCategories
                 .AsNoTracking()
