@@ -20,6 +20,7 @@ namespace BudgetingApp.Controllers
         private BudgetingContext context;
         private UserManager<IdentityUser> userManager;
         private string GetUserId() => userManager.GetUserId(User);
+        private bool IsOwner(string userId) => userId == GetUserId();
         public ExpenseCategoryController (BudgetingContext ctx, UserManager<IdentityUser> userMgr)
         {
             context = ctx;
@@ -32,6 +33,11 @@ namespace BudgetingApp.Controllers
         {
             ExpenseCategory expenseCategory = await context.ExpenseCategories
                 .FirstAsync(ec => ec.ExpenseCategoryId == id);
+
+            if (!IsOwner(expenseCategory.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
 
             Budget budget = await context.Budgets
                 .FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
@@ -55,6 +61,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Details (long id)
         {
             ExpenseCategory expenseCategory = await context.ExpenseCategories.FindAsync(id);
+
+            if (!IsOwner(expenseCategory.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
             return View("ExpenseCategoryEditor", ExpenseCategoryFactory.Details(budget, expenseCategory));
         }
@@ -64,6 +76,12 @@ namespace BudgetingApp.Controllers
         public IActionResult Create (long id)
         {
             Budget budget = context.Budgets.Find(id);
+
+            if (!IsOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             ExpenseCategory expenseCategory = new ExpenseCategory
             {
                 UserId = GetUserId(),
@@ -78,6 +96,11 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Create ([FromForm] ExpenseCategory expenseCategory, long id)
         {
             Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == id);
+
+            if (!IsOwner(preSaveBudget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
             
             if (ModelState.IsValid)
             {
@@ -96,6 +119,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Edit (long id)
         {
             ExpenseCategory expenseCategory = await context.ExpenseCategories.FindAsync(id);
+
+            if (!IsOwner(expenseCategory.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
             return View("ExpenseCategoryEditor", ExpenseCategoryFactory.Edit(budget, expenseCategory));
         }
@@ -105,6 +134,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Edit ([FromForm]ExpenseCategory expenseCategory)
         {
             Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
+
+            if (!IsOwner(preSaveBudget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             if (ModelState.IsValid)
             {
                 context.ExpenseCategories.Update(expenseCategory);
@@ -119,6 +154,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Delete (long id)
         {
             ExpenseCategory expenseCategory = await context.ExpenseCategories.FindAsync(id);
+
+            if (!IsOwner(expenseCategory.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
             return View("ExpenseCategoryEditor", ExpenseCategoryFactory.Delete(budget, expenseCategory));
         }
@@ -128,6 +169,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Delete (ExpenseCategory expenseCategory)
         {
             Budget preDeleteBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == expenseCategory.BudgetId);
+
+            if (!IsOwner(preDeleteBudget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             context.ExpenseCategories.Remove(expenseCategory);
             await context.SaveChangesAsync();
             return RedirectToAction("BudgetBreakdown", "Budget", new {id = preDeleteBudget.BudgetId});

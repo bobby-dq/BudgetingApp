@@ -22,7 +22,7 @@ namespace BudgetingApp.Controllers
         private DateTime GetLastDayOfMonth() => GetFirstDayOfMonth().AddMonths(1).AddDays(-1);
         private string GetCurrentMonthAndYear() => GetFirstDayOfMonth().ToString("MMMM yyyy");
         private string GetUserId() => userManager.GetUserId(User);
-        private bool IsBudgetOwner(string budgetUserId) => budgetUserId == GetUserId();
+        private bool IsOwner(string userId) => userId == GetUserId();
         public BudgetController (BudgetingContext ctx, UserManager<IdentityUser> userMgr)
         {
             userManager = userMgr;
@@ -52,7 +52,7 @@ namespace BudgetingApp.Controllers
                 .AsSplitQuery()
                 .FirstAsync(b => b.BudgetId == id);
 
-            if (!IsBudgetOwner(budget.UserId))
+            if (!IsOwner(budget.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             };
@@ -83,7 +83,7 @@ namespace BudgetingApp.Controllers
         {
             Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == id);
 
-            if (!IsBudgetOwner(budget.UserId))
+            if (!IsOwner(budget.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             };
@@ -107,7 +107,7 @@ namespace BudgetingApp.Controllers
         {
             Budget budget = await context.Budgets.FindAsync(id);
 
-            if (!IsBudgetOwner(budget.UserId))
+            if (!IsOwner(budget.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             };
@@ -151,7 +151,7 @@ namespace BudgetingApp.Controllers
         {
             Budget budget = await context.Budgets.FindAsync(id);
 
-            if (!IsBudgetOwner(budget.UserId))
+            if (!IsOwner(budget.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             };
@@ -165,7 +165,7 @@ namespace BudgetingApp.Controllers
         {
             Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == id);
 
-            if (!IsBudgetOwner(budget.UserId))
+            if (!IsOwner(preSaveBudget.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             };
@@ -186,7 +186,7 @@ namespace BudgetingApp.Controllers
         {
             Budget budget = await context.Budgets.FindAsync(id);
 
-            if (!IsBudgetOwner(budget.UserId))
+            if (!IsOwner(budget.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             };
@@ -199,7 +199,7 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(Budget budget)
         {
-            if (!IsBudgetOwner(budget.UserId))
+            if (!IsOwner(budget.UserId))
             {
                 return RedirectToPage("/Error/Error404");
             };
