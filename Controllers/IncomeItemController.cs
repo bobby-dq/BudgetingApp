@@ -20,6 +20,7 @@ namespace BudgetingApp.Controllers
         private BudgetingContext context;
         private UserManager<IdentityUser> userManager;
         private string GetUserId() => userManager.GetUserId(User);
+        private bool IsOwner(string userId) => userId == GetUserId(); 
         public IncomeItemController(BudgetingContext ctx, UserManager<IdentityUser> userMgr)
         {
             userManager = userMgr;
@@ -31,6 +32,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Details (long id)
         {
             IncomeItem incomeItem = await context.IncomeItems.FindAsync(id);
+
+            if (!IsOwner(incomeItem.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             IncomeCategory incomeCategory = await context.IncomeCategories.FindAsync(incomeItem.IncomeCategoryId);
             Budget budget = await context.Budgets.FindAsync(incomeItem.BudgetId);
             return View("IncomeItemEditor", IncomeItemFactory.Details(budget, incomeCategory, incomeItem));
@@ -41,6 +48,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Create (long id)
         {
             IncomeCategory incomeCategory = await context.IncomeCategories.FindAsync(id);
+
+            if (!IsOwner(incomeCategory.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             Budget budget = await context.Budgets.FindAsync(incomeCategory.BudgetId);
             IncomeItem incomeItem = new IncomeItem
             {
@@ -58,6 +71,11 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] IncomeItem incomeItem, long id)
         {
+            if (!IsOwner(incomeItem.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             IncomeCategory preSaveIncomeCategory = await context.IncomeCategories
                 .AsNoTracking()
                 .FirstAsync(ic => ic.IncomeCategoryId == id);
@@ -83,6 +101,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Edit(long id)
         {   
             IncomeItem incomeItem = await context.IncomeItems.FindAsync(id);
+
+            if (!IsOwner(incomeItem.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             IncomeCategory incomeCategory = await context.IncomeCategories.FindAsync(incomeItem.BudgetId);
             Budget budget = await context.Budgets.FindAsync(incomeItem.BudgetId);
             
@@ -93,6 +117,11 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit([FromForm] IncomeItem incomeItem)
         {
+            if (!IsOwner(incomeItem.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             IncomeCategory preSaveIncomeCategory = await context.IncomeCategories
                 .AsNoTracking()
                 .FirstAsync(ic => ic.IncomeCategoryId == incomeItem.IncomeCategoryId);
@@ -114,6 +143,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Delete (long id)
         {
             IncomeItem incomeItem = await context.IncomeItems.FindAsync(id);
+
+            if (!IsOwner(incomeItem.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             IncomeCategory incomeCategory = await context.IncomeCategories.FindAsync(incomeItem.BudgetId);
             Budget budget = await context.Budgets.FindAsync(incomeItem.BudgetId);
             
@@ -124,6 +159,11 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete (IncomeItem incomeItem)
         {
+            if (!IsOwner(incomeItem.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+            
             Budget preDeleteBudget = await context.Budgets
                 .AsNoTracking()
                 .FirstAsync(b => b.BudgetId == incomeItem.BudgetId);
