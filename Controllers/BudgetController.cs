@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +9,7 @@ using BudgetingApp.Models.RepositoryModels;
 using BudgetingApp.Models.BudgetingModels;
 using BudgetingApp.Models.ViewModels;
 using BudgetingApp.Models.ViewModelFactories;
+using BudgetingApp.Auth;
 
 namespace BudgetingApp.Controllers
 {
@@ -19,14 +19,16 @@ namespace BudgetingApp.Controllers
     {
         private BudgetingContext context;
         private UserManager<IdentityUser> userManager;
+        private IAuthorizationService authorizationService;
         private DateTime GetFirstDayOfMonth() => new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         private DateTime GetLastDayOfMonth() => GetFirstDayOfMonth().AddMonths(1).AddDays(-1);
         private string GetCurrentMonthAndYear() => GetFirstDayOfMonth().ToString("MMMM yyyy");
         private string GetUserId() => userManager.GetUserId(User);
-        public BudgetController (BudgetingContext ctx, UserManager<IdentityUser> userMgr)
+        public BudgetController (BudgetingContext ctx, UserManager<IdentityUser> userMgr, IAuthorizationService authService)
         {
             userManager = userMgr;
             context = ctx;
+            authorizationService = authService;
         }
 
         // HTTP Get Request
@@ -37,6 +39,7 @@ namespace BudgetingApp.Controllers
                 .Include(b => b.ExpenseItems)
                 .Include(b => b.IncomeItems)
                 .AsSplitQuery()
+                .Where(b => b.UserId == GetUserId())
                 .OrderByDescending(b => b.StartDate);
             return View("Index", budgets);
         }

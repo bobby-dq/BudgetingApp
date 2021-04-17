@@ -5,8 +5,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Westwind.AspNetCore.LiveReload;
 using BudgetingApp.Models.RepositoryModels;
+using BudgetingApp.Auth;
+
 
 namespace BudgetingApp
 {
@@ -22,6 +25,13 @@ namespace BudgetingApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddAuthorization (options =>
+            {
+                options.AddPolicy("IsBudgetOwner", policy => policy.Requirements.Add(new BudgetOwnerRequirement()));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, BudgetOwnerAuthorizationHandler>();
 
             // budgeting app DbContext
             services.AddDbContext<BudgetingContext>(opts =>
