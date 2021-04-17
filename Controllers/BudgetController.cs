@@ -134,6 +134,10 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] Budget budget)
         {
+            if (!IsOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
 
             if (ModelState.IsValid)
             {
@@ -163,14 +167,13 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(long id, [FromForm] Budget budget)
         {
-            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == id);
-
-            if (!IsOwner(preSaveBudget.UserId))
+            if (!IsOwner(budget.UserId))
             {
                 return RedirectToPage("/Error/Error404");
-            };
+            }
 
-            
+            Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == id);
+
             if (ModelState.IsValid)
             {
                 context.Budgets.Update(budget);
