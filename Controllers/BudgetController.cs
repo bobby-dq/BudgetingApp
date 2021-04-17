@@ -52,6 +52,11 @@ namespace BudgetingApp.Controllers
                 .AsSplitQuery()
                 .FirstAsync(b => b.BudgetId == id);
 
+            if (!IsBudgetOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            };
+
             IQueryable<ExpenseCategory> expenseCategories =  context.ExpenseCategories
                 .Include(ec => ec.ExpenseItems)
                 .AsSplitQuery()
