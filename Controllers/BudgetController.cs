@@ -9,7 +9,6 @@ using BudgetingApp.Models.RepositoryModels;
 using BudgetingApp.Models.BudgetingModels;
 using BudgetingApp.Models.ViewModels;
 using BudgetingApp.Models.ViewModelFactories;
-using BudgetingApp.Auth;
 
 namespace BudgetingApp.Controllers
 {
@@ -19,16 +18,15 @@ namespace BudgetingApp.Controllers
     {
         private BudgetingContext context;
         private UserManager<IdentityUser> userManager;
-        private IAuthorizationService authorizationService;
         private DateTime GetFirstDayOfMonth() => new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         private DateTime GetLastDayOfMonth() => GetFirstDayOfMonth().AddMonths(1).AddDays(-1);
         private string GetCurrentMonthAndYear() => GetFirstDayOfMonth().ToString("MMMM yyyy");
         private string GetUserId() => userManager.GetUserId(User);
-        public BudgetController (BudgetingContext ctx, UserManager<IdentityUser> userMgr, IAuthorizationService authService)
+        private bool IsBudgetOwner(string budgetUserId) => budgetUserId == GetUserId();
+        public BudgetController (BudgetingContext ctx, UserManager<IdentityUser> userMgr)
         {
             userManager = userMgr;
             context = ctx;
-            authorizationService = authService;
         }
 
         // HTTP Get Request

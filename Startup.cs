@@ -26,12 +26,12 @@ namespace BudgetingApp
         {
             services.AddControllersWithViews();
 
-            services.AddAuthorization (options =>
-            {
-                options.AddPolicy("IsBudgetOwner", policy => policy.Requirements.Add(new BudgetOwnerRequirement()));
-            });
+            // services.AddAuthorization (options =>
+            // {
+            //     options.AddPolicy("IsBudgetOwner", policy => policy.Requirements.Add(new BudgetOwnerRequirement()));
+            // });
 
-            services.AddSingleton<IAuthorizationHandler, BudgetOwnerAuthorizationHandler>();
+            // services.AddSingleton<IAuthorizationHandler, BudgetOwnerAuthorizationHandler>();
 
             // budgeting app DbContext
             services.AddDbContext<BudgetingContext>(opts =>
