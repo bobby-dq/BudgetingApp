@@ -82,6 +82,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Transactions (long id)
         {
             Budget budget = await context.Budgets.FirstAsync(b => b.BudgetId == id);
+
+            if (!IsBudgetOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            };
+            
             IQueryable<ExpenseItem> expenseItems = context.ExpenseItems
                 .Where(ei => ei.BudgetId == id)
                 .OrderByDescending(ei => ei.TransactionDate);
@@ -100,6 +106,13 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Details (long id)
         {
             Budget budget = await context.Budgets.FindAsync(id);
+
+            if (!IsBudgetOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            };
+
+
             return View("BudgetEditor", BudgetFactory.Details(budget));
         }
 
@@ -121,6 +134,7 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] Budget budget)
         {
+
             if (ModelState.IsValid)
             {
                 budget.BudgetId = default;
@@ -136,6 +150,12 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Edit(long id)
         {
             Budget budget = await context.Budgets.FindAsync(id);
+
+            if (!IsBudgetOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            };
+
             return View("BudgetEditor", BudgetFactory.Edit(budget));
         }
 
@@ -144,6 +164,13 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Edit(long id, [FromForm] Budget budget)
         {
             Budget preSaveBudget = await context.Budgets.AsNoTracking().FirstAsync(b => b.BudgetId == id);
+
+            if (!IsBudgetOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            };
+
+            
             if (ModelState.IsValid)
             {
                 context.Budgets.Update(budget);
@@ -158,6 +185,13 @@ namespace BudgetingApp.Controllers
         public async Task<IActionResult> Delete (long id)
         {
             Budget budget = await context.Budgets.FindAsync(id);
+
+            if (!IsBudgetOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            };
+
+
             return View("BudgetEditor", BudgetFactory.Delete(budget));
         }
 
@@ -165,6 +199,11 @@ namespace BudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(Budget budget)
         {
+            if (!IsBudgetOwner(budget.UserId))
+            {
+                return RedirectToPage("/Error/Error404");
+            };
+
             context.Budgets.Remove(budget);
             await context.SaveChangesAsync();
             return RedirectToAction("Index");
