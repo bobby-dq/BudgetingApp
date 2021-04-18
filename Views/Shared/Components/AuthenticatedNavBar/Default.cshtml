@@ -7,10 +7,15 @@
                 <p class="text-2xl font-bold text-green-600 ml-5">@Model.Name's Budgets</p>
             </div>
         </a>
-        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center text-xl md:my-0 my-5">
             <a asp-controller="Budget" asp-action="Create" class="mr-5 hover:underline hover:text-gray-600">Create Budget</a>
             <a asp-page="/Account/UserDetails" class="mr-5 hover:underline hover:text-gray-600">See Profile</a>
             <a asp-page="/Account/Logout" class="mr-5 hover:underline hover:text-gray-600">Logout</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-page="/Administration/AdminDashboard" asp-route-id="@Model.Id" class="mr-5 hover:underline hover:text-gray-600"> | Administration</a>
+            }
+            
         </nav>
     </div>
 </header>

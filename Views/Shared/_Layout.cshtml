@@ -24,7 +24,8 @@
                             <p class="text-2xl font-bold text-green-600 ml-5">Personal Budgeting App</p>
                         </div>
                     </a>
-                    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+                    
+                    <nav class="md:ml-auto flex flex-wrap text-xl items-center text-base justify-center md:my-0 my-5 ">
                         <a asp-page="/Account/Register" class="mr-5 hover:underline hover:text-gray-600">Register</a>
                         <a asp-page="/Account/Login" class="mr-5 hover:underline hover:text-gray-600">Login</a>
                         <a href="#">Demo </a>
@@ -32,15 +33,11 @@
                 </div>
             </header>
         }
-        <section class="m-1 p-1 text-black md:mx-20 min-h-full">
+        <section class="m-1 p-1 mt-2 text-black md:mx-20">
             @RenderBody()
         </section>
-        <section class="mt-16 mb-2">
-            @if (User.IsInRole("Admin"))
-            {
-                <vc:administrator-footer/>
-            }
+        <section class="text-center mb-2 mt-10">
+            Personal Budgeting App 2021 
         </section>
-
     </body>
 </html>

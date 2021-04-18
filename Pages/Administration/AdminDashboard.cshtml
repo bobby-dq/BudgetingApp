@@ -1,6 +1,7 @@
-@model AdministratorFooterModel
+@page "{id}"
+@model AdminDashboardModel
 
-<div class="self-center">
+<div class="self-center mt-10">
     <div class="flex flex-col md:mx-32 mx-10 p-2 justify-between items-center bg-green-100 shadow-lg rounded-lg border border-green-500">
         <div class="text-xl text-green-600 font-bold mb-4">
             <h1>Hello Admin @Model.Name</h1>
@@ -10,5 +11,23 @@
             <a class="hover:underline mx-3 text-lg" asp-page="/Administration/AdminRoleList">See Roles</a>
         </div>
     </div>
-
 </div>
+
+
+@functions {
+    public class AdminDashboardModel:AdminPageModel
+    {
+        public UserManager<IdentityUser> UserManager;
+        public AdminDashboardModel(UserManager<IdentityUser> userManager)
+        {
+            UserManager = userManager;
+        }
+        public string Name {get; set;}
+        public async Task OnGetAsync(string id)
+        {
+            IdentityUser user = await UserManager.FindByIdAsync(id);
+            Name = user.UserName;
+        }
+        
+    }
+}
