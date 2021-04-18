@@ -77,12 +77,20 @@
         }
 
         // Methods
-        public async Task OnGetAsync()
+        private bool IsOwner(string userId) => userId == UserManager.GetUserId(User);
+        public async Task<IActionResult> OnGetAsync()
         {
             IdentityUser user = await UserManager.FindByNameAsync(User.Identity.Name);
+            if(!IsOwner(user.Id))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             Id = user.Id;
             UserName = user.UserName;
             Email = user.Email;
+
+            return Page();
         }
     }
 }

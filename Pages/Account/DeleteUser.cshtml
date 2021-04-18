@@ -50,6 +50,8 @@
     {
         // Field Entities
         public UserManager<IdentityUser> UserManager;
+        public BudgetingContext BudgetingContext;
+        
 
         [BindProperty]
         [Required]
@@ -73,29 +75,45 @@
 
 
         // Constructor
-        public DeleteUserModel (UserManager<IdentityUser> userManager)
+        public DeleteUserModel (UserManager<IdentityUser> userManager, BudgetingContext budgetingContext)
         {
             UserManager = userManager;
+            BudgetingContext = budgetingContext;
         }
 
         // Methods
-        public async Task OnGetAsync(string id)
+        private bool IsOwner(string userId) => userId == UserManager.GetUserId(User);
+        public async Task<IActionResult> OnGetAsync(string id)
         {
+            if (!IsOwner(id))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
             IdentityUser user = await UserManager.FindByIdAsync(id);
             Id = user.Id;
             UserName = user.UserName;
             Email = user.Email;
+
+            return Page();
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!IsOwner(Id))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
         
             IdentityUser user = await UserManager.FindByIdAsync(Id);
             if (user != null)
             {
                 await UserManager.DeleteAsync(user);
+                foreach (Budget b in BudgetingContext.Budgets.Where(b => b.UserId == Id))
+                {
+                    BudgetingContext.Budgets.Remove(b);
+                }
+                await BudgetingContext.SaveChangesAsync();
             }
-            return RedirectToPage("AdminUserList");
+            return RedirectToPage("Logout");
         }
-
     }
 }

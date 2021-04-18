@@ -87,15 +87,28 @@
         }
 
         // Methods
-        public async Task OnGetAsync(string id)
+        private bool IsOwner(string userId) => userId == UserManager.GetUserId(User);
+        public async Task<IActionResult> OnGetAsync(string id)
         {
+            if (!IsOwner(id))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+
             IdentityUser user = await UserManager.FindByIdAsync(id);
             Id = user.Id;
             UserName = user.UserName;
             Email = user.Email;
+
+            return Page();
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!IsOwner(Id))
+            {
+                return RedirectToPage("/Error/Error404");
+            }
+            
             if (ModelState.IsValid)
             {
                 IdentityUser user = await UserManager.FindByIdAsync(Id);
@@ -117,7 +130,6 @@
                     ModelState.AddModelError("", err.Description);
                 }
             }
-
             return Page();
         }
 
