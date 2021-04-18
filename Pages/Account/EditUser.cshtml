@@ -1,7 +1,7 @@
 @page "{id}"
 @model EditUserModel
 
-<div>
+<div class="my-5">
     <div class="bg-gray-50 shadow-lg border border-sm">
         <div class="p-2 text-center text-xl bg-gray-100 rounded-sm shadow-sm">
             <h1>Edit Profile</h1>
@@ -108,7 +108,7 @@
             {
                 return RedirectToPage("/Error/Error404");
             }
-            
+
             if (ModelState.IsValid)
             {
                 IdentityUser user = await UserManager.FindByIdAsync(Id);

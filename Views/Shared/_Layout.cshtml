@@ -10,29 +10,37 @@
         <title>Personal Budgeting App | @ViewData["PageName"]</title>
     </head>
     <body class="bg-white">
-        <header class="text-gray-900 bg-white body-font shadow-lg">
-            <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-                <a class="flex title-font font-medium items-center text-black mb-4 md:mb-0" asp-controller="Budget" asp-action="Index">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-green-500 rounded-full" viewBox="0 0 24 24">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                    </svg>
-                    <span class="ml-3 text-xl">Tailblocks</span>
-                </a>
-                <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-                    <a asp-controller="Budget" asp-action="Index" class="mr-5 hover:text-white">First Link</a>
-                    <a class="mr-5 hover:text-white">Second Link</a>
-                    <a class="mr-5 hover:text-white">Third Link</a>
-                    <a class="mr-5 hover:text-white">Fourth Link</a>
-                </nav>
-                <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">Button
-                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
-                        <path d="M5 12h14M12 5l7 7-7 7"></path>
-                    </svg>
-                </button>
-            </div>
-        </header>
-        <section class="m-1 p-1 text-black md:mx-20">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <vc:authenticated-nav-bar/>
+        }
+        else 
+        {
+            <header class="text-gray-900 bg-white body-font shadow-lg">
+                <div class="container mx-auto flex flex-wrap px-5 py-2 flex-col md:flex-row items-center">
+                    <a class="flex title-font font-medium items-center text-black md:mb-0 hover:underline" asp-page="/">
+                        <div class="w-4/12 flex-1 flex justify-center items-center">
+                            <img class="w-2/12" src="/icons/iconmonstr-banknote-19-240.png">
+                            <p class="text-2xl font-bold text-green-600 ml-5">Personal Budgeting App</p>
+                        </div>
+                    </a>
+                    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+                        <a asp-page="/Account/Register" class="mr-5 hover:underline hover:text-gray-600">Register</a>
+                        <a asp-page="/Account/Login" class="mr-5 hover:underline hover:text-gray-600">Login</a>
+                        <a href="#">Demo </a>
+                    </nav>
+                </div>
+            </header>
+        }
+        <section class="m-1 p-1 text-black md:mx-20 min-h-full">
             @RenderBody()
         </section>
+        <section class="mt-16 mb-2">
+            @if (User.IsInRole("Admin"))
+            {
+                <vc:administrator-footer/>
+            }
+        </section>
+
     </body>
 </html>

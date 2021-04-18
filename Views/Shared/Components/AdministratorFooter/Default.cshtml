@@ -1,0 +1,14 @@
+@model AdministratorFooterModel
+
+<div class="self-center">
+    <div class="flex flex-col md:mx-32 mx-10 p-2 justify-between items-center bg-green-100 shadow-lg rounded-lg border border-green-500">
+        <div class="text-xl text-green-600 font-bold mb-4">
+            <h1>Hello Admin @Model.Name</h1>
+        </div>
+        <div class="bg-gray-100 shadow-md rounded-md px-3 py-2">
+            <a class="hover:underline mx-3 hover:shadow-lg text-lg" asp-page="/Administration/AdminUserList">See Users</a>
+            <a class="hover:underline mx-3 text-lg" asp-page="/Administration/AdminRoleList">See Roles</a>
+        </div>
+    </div>
+
+</div>

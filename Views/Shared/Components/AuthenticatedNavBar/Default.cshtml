@@ -1,0 +1,16 @@
+@model AuthenticatedNavBarModel
+<header class="text-gray-900 bg-white body-font shadow-lg">
+    <div class="container mx-auto flex flex-wrap px-5 py-2 flex-col md:flex-row items-center">
+        <a class="flex title-font font-medium items-center text-black md:mb-0 hover:underline" asp-controller="Budget" asp-action="Index">
+            <div class="w-4/12 flex-1 flex justify-center items-center">
+                <img class="w-2/12" src="/icons/iconmonstr-banknote-19-240.png">
+                <p class="text-2xl font-bold text-green-600 ml-5">@Model.Name's Budgets</p>
+            </div>
+        </a>
+        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+            <a asp-controller="Budget" asp-action="Create" class="mr-5 hover:underline hover:text-gray-600">Create Budget</a>
+            <a asp-page="/Account/UserDetails" class="mr-5 hover:underline hover:text-gray-600">See Profile</a>
+            <a asp-page="/Account/Logout" class="mr-5 hover:underline hover:text-gray-600">Logout</a>
+        </nav>
+    </div>
+</header>
