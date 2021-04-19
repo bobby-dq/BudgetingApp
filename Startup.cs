@@ -26,13 +26,6 @@ namespace BudgetingApp
         {
             services.AddControllersWithViews();
 
-            // services.AddAuthorization (options =>
-            // {
-            //     options.AddPolicy("IsBudgetOwner", policy => policy.Requirements.Add(new BudgetOwnerRequirement()));
-            // });
-
-            // services.AddSingleton<IAuthorizationHandler, BudgetOwnerAuthorizationHandler>();
-
             // budgeting app DbContext
             services.AddDbContext<BudgetingContext>(opts =>
             {
@@ -69,9 +62,14 @@ namespace BudgetingApp
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/Error/Error500");
+                app.UseStatusCodePagesWithRedirects("/Error/Error{0}");
+                app.UseHsts();
+            }
+    
             app.UseLiveReload();
-            app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseRouting();
 
