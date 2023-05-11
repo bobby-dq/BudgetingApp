@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Westwind.AspNetCore.LiveReload;
 using BudgetingApp.Models.RepositoryModels;
 using BudgetingApp.Auth;
-using System;
+
 
 namespace BudgetingApp
 {
@@ -82,7 +82,7 @@ namespace BudgetingApp
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            context.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             IdentitySeedData.CreateAdminAccount(app.ApplicationServices, Configuration);
             BudgetingSeedData.SeedBudgetingDatabase(context, app.ApplicationServices);
         }

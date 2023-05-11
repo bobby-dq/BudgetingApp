@@ -1,10 +1,15 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
 
 namespace BudgetingApp.Migrations
 {
-    public partial class BudgetingDatabase : Migration
+    /// <inheritdoc />
+    public partial class InitalCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -12,11 +17,11 @@ namespace BudgetingApp.Migrations
                 columns: table => new
                 {
                     BudgetId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,11 +33,11 @@ namespace BudgetingApp.Migrations
                 columns: table => new
                 {
                     ExpenseCategoryId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    BudgetedAmount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    ExpectedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    BudgetedAmount = table.Column<decimal>(type: "numeric(12,2)", nullable: false),
+                    ExpectedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     BudgetId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -51,11 +56,11 @@ namespace BudgetingApp.Migrations
                 columns: table => new
                 {
                     IncomeCategoryId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    BudgetedAmount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    ExpectedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    BudgetedAmount = table.Column<decimal>(type: "numeric(12,2)", nullable: false),
+                    ExpectedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     BudgetId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -74,11 +79,11 @@ namespace BudgetingApp.Migrations
                 columns: table => new
                 {
                     ExpenseItemId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(12,2)", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ExpenseCategoryId = table.Column<long>(type: "bigint", nullable: false),
                     BudgetId = table.Column<long>(type: "bigint", nullable: true)
                 },
@@ -89,8 +94,7 @@ namespace BudgetingApp.Migrations
                         name: "FK_ExpenseItems_Budgets_BudgetId",
                         column: x => x.BudgetId,
                         principalTable: "Budgets",
-                        principalColumn: "BudgetId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "BudgetId");
                     table.ForeignKey(
                         name: "FK_ExpenseItems_ExpenseCategories_ExpenseCategoryId",
                         column: x => x.ExpenseCategoryId,
@@ -104,11 +108,11 @@ namespace BudgetingApp.Migrations
                 columns: table => new
                 {
                     IncomeItemId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(12,2)", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IncomeCategoryId = table.Column<long>(type: "bigint", nullable: false),
                     BudgetId = table.Column<long>(type: "bigint", nullable: true)
                 },
@@ -119,8 +123,7 @@ namespace BudgetingApp.Migrations
                         name: "FK_IncomeItems_Budgets_BudgetId",
                         column: x => x.BudgetId,
                         principalTable: "Budgets",
-                        principalColumn: "BudgetId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "BudgetId");
                     table.ForeignKey(
                         name: "FK_IncomeItems_IncomeCategories_IncomeCategoryId",
                         column: x => x.IncomeCategoryId,
@@ -160,6 +163,7 @@ namespace BudgetingApp.Migrations
                 column: "IncomeCategoryId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
