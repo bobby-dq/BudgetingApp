@@ -444,8 +444,11 @@ $RECYCLE.BIN/
 
 appsettings.json
 appsettings.Production.json
+appsettings.Development.json
 ~/Models/RepositoryModels/IdentitySeedData.cs
 Dockerfile
 docker-compose.yml
 .dockerignore
 *.arm.json
+.history/
+.history
