@@ -20,13 +20,13 @@ namespace BudgetingApp.Models.RepositoryModels
             UserManager<IdentityUser> userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string username = configuration["Data:AdminUser:Name"];
-            string email = configuration["Data:AdminUser:Email"];
-            string password = configuration["Data:AdminUser:Role"];
-            string role = configuration["Data:AdminUser:Role"];
+            string username = configuration["Data:AdminUser:Name"]
+            string email = configuration["Data:AdminUser:Email"] ?? "bcoi.dq@gmail.com";
+            string password = configuration["Data:AdminUser:Role"] ?? "Password123$";
+            string role = configuration["Data:AdminUser:Role"] ?? "Admin";
 
             if (await userManager.FindByNameAsync(username) == null)
-            {
+            {;
                 if (await roleManager.FindByNameAsync(role) == null)
                 {
                     await roleManager.CreateAsync(new IdentityRole(role));

@@ -23,7 +23,7 @@ namespace BudgetingApp.Models.RepositoryModels
             string username = configuration["Data:AdminUser:Name"];
             string email = configuration["Data:AdminUser:Email"];
             string password = configuration["Data:AdminUser:Role"];
-            string role = configuration["Data:AdminUser:Role"];
+            string role = configuration["Data:AdminUser:Role"] ?? "Admin";
 
             if (await userManager.FindByNameAsync(username) == null)
             {
