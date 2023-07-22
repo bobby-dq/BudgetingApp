@@ -18,7 +18,7 @@ namespace BudgetingApp.Models.RepositoryModels
         }
         public static async Task SeedBudgetingDatabaseAsync (BudgetingContext context, UserManager<IdentityUser> userManager) 
         {
-            IdentityUser user = await userManager.FindByNameAsync("BobbyDq");
+            IdentityUser user = await userManager.FindByNameAsync("BobbyDQ");
             string userId = user.Id;
 
             context.Database.Migrate();

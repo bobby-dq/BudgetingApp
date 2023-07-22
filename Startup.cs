@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Westwind.AspNetCore.LiveReload;
@@ -28,9 +29,7 @@ namespace BudgetingApp
 
             // budgeting app DbContext
             services.AddDbContext<BudgetingContext>(opts =>
-            {
-                opts.UseNpgsql(Configuration["ConnectionStrings:BudgetingAppConnection"]);
-            });
+                opts.UseNpgsql(Configuration["ConnectionStrings:BudgetingAppConnection"]));
 
             // Identity DbContext
             services.AddDbContext<IdentityContext> (opts =>
@@ -82,7 +81,13 @@ namespace BudgetingApp
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                scope.ServiceProvider.GetService<BudgetingContext>().Database.Migrate();
+                scope.ServiceProvider.GetService<IdentityContext>().Database.Migrate();
+            }
             IdentitySeedData.CreateAdminAccount(app.ApplicationServices, Configuration);
             BudgetingSeedData.SeedBudgetingDatabase(context, app.ApplicationServices);
         }
